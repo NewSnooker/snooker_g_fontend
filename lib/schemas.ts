@@ -2,9 +2,14 @@ import * as z from "zod";
 
 export const signupFormSchema = z
   .object({
+    username: z
+      .string()
+      .max(20, { message: "ชื่อต้องไม่เกิน 20 ตัวอักษร" })
+      .min(5, { message: "ชื่อต้องมีอย่างน้อย 5 ตัวอักษร" }),
     email: z
       .string()
-      .max(50, { message: "อีเมลต้องไม่เกิน 50 ตัวอักษร" })
+      .max(30, { message: "อีเมลต้องไม่เกิน 30 ตัวอักษร" })
+      .min(5, { message: "อีเมลต้องมีอย่างน้อย 5 ตัวอักษร" })
       .email({ message: "รูปแบบอีเมลไม่ถูกต้อง" }),
     password: z
       .string()

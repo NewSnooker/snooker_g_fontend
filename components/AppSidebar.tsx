@@ -3,6 +3,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -26,53 +27,52 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 // สมมุติว่าคุณมีฟังก์ชัน cn สำหรับรวม class names
 import { cn } from "@/lib/utils";
-
-const items = [
-  { title: "แดชบอร์ด", href: "/backoffice/dashboard", icon: LayoutDashboard },
-  { title: "พนักงานร้าน", href: "/backoffice/dashboard/user", icon: Users },
-  {
-    title: "บันทึกการซ่อม",
-    href: "/backoffice/dashboard/repair-record",
-    icon: Wrench,
-  },
-  {
-    title: "สถานะการซ่อม",
-    href: "/backoffice/dashboard/repair-status",
-    icon: Settings,
-  },
-  {
-    title: "สถิติการซ่อมของช่าง",
-    href: "/backoffice/dashboard/mechanic-report",
-    icon: BarChart3,
-  },
-  {
-    title: "รายงานรายได้",
-    href: "/backoffice/dashboard/income-report",
-    icon: FileText,
-  },
-  {
-    title: "ทะเบียนวัสดุ อุปกรณ์",
-    href: "/backoffice/dashboard/devices",
-    icon: Package,
-  },
-  { title: "ข้อมูลร้าน", href: "/backoffice/dashboard/company", icon: Store },
-];
+import { Button } from "./ui/button";
+import { pacificoFont } from "@/font/font";
+import { WEBSITE_INITIALS } from "@/lib/config";
+import { adminSidebarLinks, userSidebarLinks } from "@/lib/api/sidebarLink";
+import { SideBarNavUser } from "./ui/sidebar-nav-user";
 
 export function AppSidebar() {
   const pathname = usePathname(); // ดึงเส้นทางปัจจุบัน
+  const data = {
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+  };
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
       <SidebarContent>
         <SidebarGroup className="gap-4">
-          <SidebarGroupLabel className="flex items-center gap-2">
-            <Image src={logo} alt="logo" width={25} height={25} />
-            <h1 className="text-lg font-bold">ระบบแจ้งซ่อม</h1>
+          <SidebarGroupLabel className="flex items-center   ">
+            {" "}
+            <Button
+              variant="ghost"
+              size={"icon"}
+              className="flex items-center "
+            >
+              <Link
+                href="/"
+                className=" text-2xl font-bold tracking-tight rounded-full"
+              >
+                <span
+                  className={cn(
+                    "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-rose-300",
+                    pacificoFont.className
+                  )}
+                >
+                  {WEBSITE_INITIALS}
+                </span>
+              </Link>
+            </Button>
           </SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => {
+              {userSidebarLinks.map((item) => {
                 // กำหนด active state โดยเปรียบเทียบ URL ปัจจุบันกับ item.href
                 const isActive = pathname === item.href;
                 return (
@@ -82,7 +82,7 @@ export function AppSidebar() {
                       className={cn(
                         "flex items-center gap-2 group-data-[collapsible=icon]:justify-center transition-colors duration-200",
                         isActive
-                          ? "bg-zinc-200 hover:bg-zinc-100" // กำหนด active state: ปรับสีพื้นหลังและข้อความ
+                          ? "bg-zinc-200/70 hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600" // กำหนด active state: ปรับสีพื้นหลังและข้อความ
                           : ""
                       )}
                     >
@@ -100,6 +100,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SideBarNavUser user={data.user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }

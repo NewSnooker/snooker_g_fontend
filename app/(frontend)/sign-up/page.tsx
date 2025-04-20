@@ -1,9 +1,20 @@
-"use client";
-
 import CanvasBlurSpotsLarge from "@/components/CanvasBlurSpotsLarge";
 import SignUpForm from "@/components/forms/SignUpForm";
+import { Metadata } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function SignUpPage() {
+export const metadata: Metadata = {
+  title: "Sign Up",
+};
+
+export default async function SignUpPage() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth")?.value;
+
+  if (authToken) {
+    redirect("/home");
+  }
   return (
     <div className="relative  flex w-full min-h-screen items-center justify-center overflow-hidden">
       <CanvasBlurSpotsLarge />

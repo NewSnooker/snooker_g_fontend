@@ -196,7 +196,7 @@ export default function HeroGeometric({
         </div>
       </div>
       {/* <SmoothCursor /> */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/80 dark:from-[#030303] dark:via-transparent dark:to-[#030303]/80 pointer-events-none" />
+      <div className="absolute top-0 inset-0 bg-gradient-to-t from-white via-transparent to-white/80 dark:from-[#030303] dark:via-transparent dark:to-[#030303]/80 pointer-events-none" />
     </div>
   );
 }

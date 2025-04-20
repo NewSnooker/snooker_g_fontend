@@ -1,5 +1,4 @@
 "use client";
-// import axios from "axios";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +29,7 @@ import { ShineBorder } from "../magicui/shine-border";
 import { cn } from "@/lib/utils";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
+import { signIn } from "@/lib/api/auth";
 
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ เพิ่ม state โหลดดิ้ง
@@ -45,7 +45,14 @@ export default function SignInForm() {
 
   async function onSubmit(values: z.infer<typeof signinFormSchema>) {
     try {
-      setIsLoading(true); // ✅ เริ่มโหลด
+      setIsLoading(true);
+      const response = await signIn(values.email, values.password);
+      if (response.status === "success") {
+        toast.success(response.message + " ✅");
+        router.push("/home");
+      } else if (response.status === "error") {
+        toast.error(response.message + " ❌");
+      }
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("เกิดข้อผิดพลาดในการล็อกอิน");
@@ -71,7 +78,7 @@ export default function SignInForm() {
           </span>
         </div>
         <CardDescription>
-          กรอกอีเมล์และรหัสผ่านของคุณเพื่อเข้าสู่ระบบบัญชี
+          โปรดกรอกข้อมูลของคุณเพื่อเข้าสู่ระบบบัญชี
         </CardDescription>
       </CardHeader>
       <CardContent>

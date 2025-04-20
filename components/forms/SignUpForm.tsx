@@ -1,5 +1,4 @@
 "use client";
-// import axios from "axios";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +29,7 @@ import { ShineBorder } from "../magicui/shine-border";
 import { cn } from "@/lib/utils";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
+import { signUp } from "@/lib/api/auth";
 
 export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ เพิ่ม state โหลดดิ้ง
@@ -38,6 +38,7 @@ export default function SignUpForm() {
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -46,12 +47,24 @@ export default function SignUpForm() {
 
   async function onSubmit(values: z.infer<typeof signupFormSchema>) {
     try {
-      setIsLoading(true); // ✅ เริ่มโหลด
+      setIsLoading(true);
+      const response = await signUp(
+        values.username,
+        values.email,
+        values.password
+      );
+      if (response.status === "success") {
+        toast.success(response.message + " ✅");
+        router.push("/sign-in");
+      }
+      if (response.status === "error") {
+        toast.error(response.message + " ❌");
+      }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการล็อกอิน");
+      toast.error("เกิดข้อผิดพลาดในการลงทะเบียน");
     } finally {
-      setIsLoading(false); // ✅ หยุดโหลด ไม่ว่าจะสำเร็จหรือไม่
+      setIsLoading(false);
     }
   }
 
@@ -71,14 +84,34 @@ export default function SignUpForm() {
             {WEBSITE_INITIALS}
           </span>
         </div>
-        <CardDescription>
-          กรอกอีเมล์และรหัสผ่านของคุณเพื่อลงทะเบียน
-        </CardDescription>
+        <CardDescription>โปรดกรอกข้อมูลของคุณเพื่อลงทะเบียน</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid gap-4">
+              {/* username */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel htmlFor="username">Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="username"
+                        placeholder="username"
+                        type="text"
+                        autoComplete="username"
+                        disabled={isLoading} // ✅ ปิดช่องระหว่างโหลด
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* email */}
               <FormField
                 control={form.control}

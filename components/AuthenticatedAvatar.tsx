@@ -10,9 +10,10 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/generateInitials";
 import Link from "next/link";
-import { TOKEN_KEY } from "@/lib/config";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { signOut } from "@/lib/api/auth";
+import { toast } from "sonner";
 
 export default function AuthenticatedAvatar({
   name,
@@ -22,11 +23,20 @@ export default function AuthenticatedAvatar({
   level: string;
 }) {
   const router = useRouter();
-  const handleLogout = () => {
-    localStorage.removeItem(TOKEN_KEY!);
-    localStorage.removeItem("bun_service_name");
-    localStorage.removeItem("bun_service_level");
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      const response = await signOut();
+      if (response.status === "success") {
+        toast.success(response.message + " ✅");
+        router.push("/sign-in");
+        router.refresh();
+      } else if (response.status === "error") {
+        toast.error(response.message + " ❌");
+      }
+    } catch (error) {
+      console.error("Form submission error", error);
+      toast.error("เกิดข้อผิดพลาดในการล็อกอิน");
+    }
   };
   return (
     <DropdownMenu>
