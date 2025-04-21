@@ -50,6 +50,7 @@ export default function SignInForm() {
       if (response.status === "success") {
         toast.success(response.message + " ✅");
         router.push("/home");
+        router.refresh();
       } else if (response.status === "error") {
         toast.error(response.message + " ❌");
       }

@@ -22,7 +22,7 @@ export default function NotFound() {
         </CardHeader>
 
         <CardContent>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground hidden md:block">
             ข้อมูลที่คุณต้องการไม่สามารถแสดงได้ในขณะนี้
             <br />
             อาจเป็นเพราะคุณพิมพ์ที่อยู่ผิด หน้านี้ถูกลบออกไปแล้ว

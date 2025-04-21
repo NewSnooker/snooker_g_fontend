@@ -1,5 +1,10 @@
+import { Metadata } from "next";
 import React from "react";
 
-export default function page() {
+export const metadata: Metadata = {
+  title: "Home",
+};
+
+export default async function page() {
   return <div>page</div>;
 }

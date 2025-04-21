@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  BellIcon,
-  CreditCardIcon,
-  LogOutIcon,
-  MoreVerticalIcon,
-  UserCircleIcon,
-} from "lucide-react";
-
+import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+import { WEBSITE_INITIALS } from "@/lib/config";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -24,6 +18,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { signOut } from "@/lib/api/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function SideBarNavUser({
   user,
@@ -34,8 +31,23 @@ export function SideBarNavUser({
     avatar: string;
   };
 }) {
+  const router = useRouter();
   const { isMobile } = useSidebar();
-
+  const handleLogout = async () => {
+    try {
+      const response = await signOut();
+      if (response.status === "success") {
+        toast.success(response.message + " ✅");
+        router.push("/sign-in");
+        router.refresh();
+      } else if (response.status === "error") {
+        toast.error(response.message + " ❌");
+      }
+    } catch (error) {
+      console.error("Form submission error", error);
+      toast.error("เกิดข้อผิดพลาดในการออกจากระบบ");
+    }
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -47,7 +59,9 @@ export function SideBarNavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {WEBSITE_INITIALS}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -82,21 +96,13 @@ export function SideBarNavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <UserCircleIcon />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Notifications
+                บัญชีของฉัน
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} variant="destructive">
               <LogOutIcon />
-              Log out
+              ออกจากระบบ
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

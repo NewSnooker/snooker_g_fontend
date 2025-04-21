@@ -2,25 +2,28 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/generateInitials";
-import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { signOut } from "@/lib/api/auth";
 import { toast } from "sonner";
+import { LogOutIcon, UserCircleIcon } from "lucide-react";
+import { WEBSITE_INITIALS } from "@/lib/config";
 
 export default function AuthenticatedAvatar({
-  name,
-  level,
+  name = "name",
+  avatar,
+  email = "email@example",
 }: {
   name: string;
-  level: string;
+  avatar: string;
+  email: string;
 }) {
   const router = useRouter();
   const handleLogout = async () => {
@@ -35,36 +38,48 @@ export default function AuthenticatedAvatar({
       }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการล็อกอิน");
+      toast.error("เกิดข้อผิดพลาดในการออกจากระบบ");
     }
   };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer" asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <Avatar className="">
-            <AvatarFallback>{getInitials(name)}</AvatarFallback>
+          <Avatar className="h-8 w-8 ">
+            <AvatarImage src={avatar} alt={name} />
+            <AvatarFallback className="">{WEBSITE_INITIALS}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>
-          <p>{name}</p>
-          <p className=" text-xs text-muted-foreground">{level}</p>
+        <DropdownMenuLabel className="p-0 font-normal">
+          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarImage src={avatar} alt={name} />
+              <AvatarFallback className="rounded-lg">
+                {WEBSITE_INITIALS}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium ">{name}</span>
+              <span className="truncate text-xs text-muted-foreground">
+                {email}
+              </span>
+            </div>
+          </div>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-        <Link href="/backoffice/profile">
-          <DropdownMenuItem className="cursor-pointer">
-            โปรไฟล์
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <UserCircleIcon />
+            บัญชีของฉัน
           </DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="cursor-pointer"
-          variant="destructive"
-        >
-          <div>ออกจากระบบ</div>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout} variant="destructive">
+          <LogOutIcon />
+          ออกจากระบบ
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

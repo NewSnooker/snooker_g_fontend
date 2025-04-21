@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
-import { adminSidebarLinks, userSidebarLinks } from "@/lib/api/sidebarLink";
+import { adminSidebarLinks, userSidebarLinks } from "@/lib/sidebarLink";
 import { SideBarNavUser } from "./ui/sidebar-nav-user";
 
 export function AppSidebar() {

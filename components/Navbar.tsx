@@ -13,7 +13,7 @@ export default function Navbar() {
   const [name, setName] = useState<string>("");
   const [level, setLevel] = useState<string>("");
   return (
-    <div className="flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b">
+    <div className="bg-card flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b">
       <div className="flex gap-4">
         <SidebarTrigger />
         <Button
