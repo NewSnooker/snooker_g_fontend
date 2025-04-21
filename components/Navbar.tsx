@@ -21,7 +21,7 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    if (me?.message === "Token invalidated") {
+    if (me?.message === "Token หมดอายุ") {
       router.refresh();
     }
   }, [me]);
