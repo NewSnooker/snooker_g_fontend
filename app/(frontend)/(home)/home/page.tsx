@@ -1,8 +1,6 @@
 import BackgroundEffect from "@/components/BackgroundEffect";
 import JoinCodeForm from "@/components/forms/JoinCodeForm";
 import SwiperSlideGames from "@/components/frontend/SwiperSlideGames";
-import WebsiteNameMotion from "@/components/motion/WebsiteNameMotion";
-import { Button } from "@/components/ui/button";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_NAME } from "@/lib/config";
 import { cn } from "@/lib/utils";
@@ -61,6 +59,7 @@ export default async function page() {
         "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
     },
   ];
+
   return (
     <div className="relative min-h-screen overflow-hidden w-full flex justify-center">
       <BackgroundEffect />

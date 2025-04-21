@@ -15,17 +15,11 @@ import { signOut } from "@/lib/api/auth";
 import { toast } from "sonner";
 import { LogOutIcon, UserCircleIcon } from "lucide-react";
 import { WEBSITE_INITIALS } from "@/lib/config";
+import { UserProps } from "@/lib/api/user.type";
 
-export default function AuthenticatedAvatar({
-  name = "name",
-  avatar,
-  email = "email@example",
-}: {
-  name: string;
-  avatar: string;
-  email: string;
-}) {
+export default function AuthenticatedAvatar({ user }: { user: UserProps }) {
   const router = useRouter();
+
   const handleLogout = async () => {
     try {
       const response = await signOut();
@@ -45,25 +39,25 @@ export default function AuthenticatedAvatar({
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer" asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <Avatar className="h-8 w-8 ">
-            <AvatarImage src={avatar} alt={name} />
-            <AvatarFallback className="">{WEBSITE_INITIALS}</AvatarFallback>
+          <Avatar className="h-8 w-8 rounded-lg grayscale">
+            {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
+            <AvatarFallback>{WEBSITE_INITIALS}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="min-w-56 rounded-lg">
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={avatar} alt={name} />
+              {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
               <AvatarFallback className="rounded-lg">
                 {WEBSITE_INITIALS}
               </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium ">{name}</span>
+              <span className="truncate font-medium">{user?.username}</span>
               <span className="truncate text-xs text-muted-foreground">
-                {email}
+                {user?.email}
               </span>
             </div>
           </div>

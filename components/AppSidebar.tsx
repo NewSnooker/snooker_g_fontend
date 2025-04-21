@@ -11,38 +11,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-  LayoutDashboard,
-  Users,
-  Wrench,
-  Settings,
-  BarChart3,
-  FileText,
-  Package,
-  Store,
-} from "lucide-react";
-import Image from "next/image";
-import logo from "@/public/logo.png";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-// สมมุติว่าคุณมีฟังก์ชัน cn สำหรับรวม class names
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { pacificoFont } from "@/font/font";
-import { WEBSITE_INITIALS } from "@/lib/config";
-import { adminSidebarLinks, userSidebarLinks } from "@/lib/sidebarLink";
+import { userSidebarLinks } from "@/lib/sidebarLink";
 import { SideBarNavUser } from "./ui/sidebar-nav-user";
 import LogoTextGradient from "./frontend/LogoTextGradient";
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "@/lib/api/user";
+import { useEffect } from "react";
 
 export function AppSidebar() {
   const pathname = usePathname(); // ดึงเส้นทางปัจจุบัน
-  const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
-  };
+  const { data: me } = useQuery({
+    queryKey: ["user-me"],
+    queryFn: getMe,
+  });
+  const router = useRouter();
+
+  useEffect(() => {
+    if (me?.message === "Token invalidated") {
+      router.refresh();
+    }
+  }, [me]);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
@@ -83,7 +74,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SideBarNavUser user={data.user} />
+        <SideBarNavUser user={me?.data} />
       </SidebarFooter>
     </Sidebar>
   );

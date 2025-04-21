@@ -1,7 +1,10 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import Navbar from "@/components/Navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { getMe } from "@/lib/api/user";
 import { WEBSITE_NAME } from "@/lib/config";
+import { getQueryClient } from "@/lib/getQueryClient";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -41,17 +44,26 @@ export default async function Layout({
 }) {
   const cookieStore = await cookies();
   const authToken = cookieStore.get("auth")?.value;
+
   if (authToken) {
+    const queryClient = getQueryClient();
+    await queryClient.prefetchQuery({
+      queryKey: ["user-me"],
+      queryFn: getMe,
+    });
+
     return (
-      <SidebarProvider>
-        <div className="flex h-screen w-full ">
-          <AppSidebar />
-          <div className="flex flex-col flex-1  ">
-            <Navbar />
-            <main className="flex-1 overflow-y-auto ">{children}</main>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <SidebarProvider>
+          <div className="flex h-screen w-full ">
+            <AppSidebar />
+            <div className="flex flex-col flex-1  ">
+              <Navbar />
+              <main className="flex-1 overflow-y-auto ">{children}</main>
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </HydrationBoundary>
     );
   }
   return <main className="flex-1 overflow-y-auto ">{children}</main>;

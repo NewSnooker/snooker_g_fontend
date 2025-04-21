@@ -1,17 +1,31 @@
 "use client";
-import React, { useState } from "react";
 import AuthenticatedAvatar from "./AuthenticatedAvatar";
 import { cn } from "@/lib/utils";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
-import Link from "next/link";
 import { SidebarTrigger } from "./ui/sidebar";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "@/lib/api/user";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const [name, setName] = useState<string>("");
-  const [level, setLevel] = useState<string>("");
+  const { data: me } = useQuery({
+    queryKey: ["user-me"],
+    queryFn: getMe,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (me?.message === "Token invalidated") {
+      router.refresh();
+    }
+  }, [me]);
+
   return (
     <div className="bg-card flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b">
       <div className="flex gap-4">
@@ -38,7 +52,7 @@ export default function Navbar() {
       </div>
       <div className="flex gap-2">
         <ModeToggle />
-        <AuthenticatedAvatar name={name} level={level} />
+        <AuthenticatedAvatar user={me?.data} />
       </div>
     </div>
   );

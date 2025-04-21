@@ -1,5 +1,3 @@
-"use client"; // บอกว่าไฟล์นี้รันบนฝั่ง Client ของ Next.js
-
 import { isServer, QueryClient } from "@tanstack/react-query";
 
 // ฟังก์ชันสำหรับสร้าง QueryClient ตัวใหม่ พร้อมตั้งค่าพื้นฐาน
@@ -8,7 +6,8 @@ const makQueryClient = () => {
     defaultOptions: {
       queries: {
         // ตั้งเวลาที่ query จะถือว่ายังใหม่อยู่ (ไม่โหลดซ้ำ) = 1 นาที
-        staleTime: 1000 * 60,
+        // staleTime: 1000 * 60,
+        // staleTime: 0,
       },
     },
   });
