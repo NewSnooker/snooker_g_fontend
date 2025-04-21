@@ -32,6 +32,7 @@ import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
 import { adminSidebarLinks, userSidebarLinks } from "@/lib/sidebarLink";
 import { SideBarNavUser } from "./ui/sidebar-nav-user";
+import LogoTextGradient from "./frontend/LogoTextGradient";
 
 export function AppSidebar() {
   const pathname = usePathname(); // ดึงเส้นทางปัจจุบัน
@@ -48,26 +49,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup className="gap-4">
           <SidebarGroupLabel className="flex items-center   ">
-            {" "}
-            <Button
-              variant="ghost"
-              size={"icon"}
-              className="flex items-center "
-            >
-              <Link
-                href="/"
-                className=" text-2xl font-bold tracking-tight rounded-full"
-              >
-                <span
-                  className={cn(
-                    "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-rose-300",
-                    pacificoFont.className
-                  )}
-                >
-                  {WEBSITE_INITIALS}
-                </span>
-              </Link>
-            </Button>
+            <LogoTextGradient />
           </SidebarGroupLabel>
 
           <SidebarGroupContent>

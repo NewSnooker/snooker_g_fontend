@@ -1,3 +1,4 @@
+import { join } from "path";
 import * as z from "zod";
 
 export const signupFormSchema = z
@@ -36,4 +37,9 @@ export const signinFormSchema = z.object({
     .min(8, { message: "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร" })
     .max(20, { message: "รหัสผ่านต้องไม่เกิน 20 ตัวอักษร" })
     .regex(/[a-zA-Z0-9]/, { message: "ต้องมีตัวอักษรและเลขอย่างน้อย 1 ตัว" }),
+});
+export const joinCodeFormSchema = z.object({
+  joinCode: z
+    .string()
+    .length(6, { message: "รหัสห้องต้องมีความยาว 6 ตัวอักษร" }),
 });

@@ -1,4 +1,11 @@
-import { Geist, Geist_Mono, Pacifico, Sriracha } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Pacifico,
+  Sriracha,
+  Prompt,
+  Nunito,
+} from "next/font/google";
 
 export const pacificoFont = Pacifico({
   subsets: ["latin"],
@@ -12,12 +19,14 @@ export const srirachaFont = Sriracha({
   variable: "--font-sriracha",
 });
 
-export const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+export const promptFont = Prompt({
+  subsets: ["thai"],
+  weight: ["200", "400", "700"],
+  variable: "--font-prompt",
 });
 
-export const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+export const nunitoFont = Nunito({
   subsets: ["latin"],
+  weight: ["200", "400", "700"],
+  variable: "--font-nunito",
 });

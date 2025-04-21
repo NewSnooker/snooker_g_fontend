@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import { pacificoFont } from "@/font/font";
 import { WEBSITE_INITIALS } from "@/lib/config";
 import { signUp } from "@/lib/api/auth";
+import LogoTextGradient from "../frontend/LogoTextGradient";
 
 export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ เพิ่ม state โหลดดิ้ง
@@ -75,14 +76,7 @@ export default function SignUpForm() {
         <div className="flex justify-between">
           <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
 
-          <span
-            className={cn(
-              "bg-clip-text text- text-transparent bg-gradient-to-r from-indigo-300 to-rose-300",
-              pacificoFont.className
-            )}
-          >
-            {WEBSITE_INITIALS}
-          </span>
+          <LogoTextGradient className="text-base" />
         </div>
         <CardDescription>โปรดกรอกข้อมูลของคุณเพื่อลงทะเบียน</CardDescription>
       </CardHeader>

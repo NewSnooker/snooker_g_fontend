@@ -1,4 +1,15 @@
+import BackgroundEffect from "@/components/BackgroundEffect";
+import JoinCodeForm from "@/components/forms/JoinCodeForm";
+import SwiperSlideGames from "@/components/frontend/SwiperSlideGames";
+import WebsiteNameMotion from "@/components/motion/WebsiteNameMotion";
+import { Button } from "@/components/ui/button";
+import { pacificoFont } from "@/font/font";
+import { WEBSITE_NAME } from "@/lib/config";
+import { cn } from "@/lib/utils";
+import { Gamepad2 } from "lucide-react";
+
 import { Metadata } from "next";
+import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -6,5 +17,81 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  return <div>page</div>;
+  const data = [
+    {
+      id: 1,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 2,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 3,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 4,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 5,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 6,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+    {
+      id: 7,
+      name: "Game 1",
+      image:
+        "https://kzmkhlrnns04h9qq4qpy.lite.vusercontent.net/placeholder.svg?height=150&width=250",
+    },
+  ];
+  return (
+    <div className="relative min-h-screen overflow-hidden w-full flex justify-center">
+      <BackgroundEffect />
+
+      <div className="">
+        <div className="my-10 sm:my-20 flex flex-col items-center z-20">
+          <h1
+            className={cn(
+              "text-3xl sm:text-4xl md:text-6xl font-bold mb-6 md:mb-10 tracking-tight "
+            )}
+          >
+            <span className={cn("text-gradient-1", pacificoFont.className)}>
+              {WEBSITE_NAME}
+            </span>
+          </h1>
+          <JoinCodeForm />
+        </div>
+        <div className="z-10 max-w-xs sm:max-w-3xl md:max-w-5xl xl:max-w-7xl flex flex-col items-center justify-center gap-6">
+          <div className="w-full flex items-center justify-between px-4 sm:px-0 border-b border-gradient-1 pb-4">
+            {" "}
+            <h2 className="text-xl font-semibold flex items-center gap-2 ">
+              <Gamepad2 className=" w-5 h-5" />{" "}
+              <span className="hidden sm:inline">แนะนำ</span>{" "}
+            </h2>{" "}
+            <Link href={"/games"} className="underline">
+              ดูเกมทั้งหมด
+            </Link>
+          </div>
+          <SwiperSlideGames data={data} />
+        </div>
+      </div>
+    </div>
+  );
 }

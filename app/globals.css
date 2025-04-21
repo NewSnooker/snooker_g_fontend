@@ -48,37 +48,44 @@
   --color-color-2: var(----color-2);
   --color-color-1: var(----color-1);
   @keyframes rainbow {
-  0% {
-    background-position: 0%;
+    0% {
+      background-position: 0%;
     }
-  100% {
-    background-position: 200%;
+    100% {
+      background-position: 200%;
     }
   }
   @keyframes rainbow {
-  0% {
-    background-position: 0%;
+    0% {
+      background-position: 0%;
     }
-  100% {
-    background-position: 200%;
+    100% {
+      background-position: 200%;
     }
   }
-  --animate-rippling: rippling var(--duration) ease-out
-;
+  --animate-rippling: rippling var(--duration) ease-out;
   @keyframes rippling {
-  0% {
-    opacity: 1;}
-  100% {
-    transform: scale(2);
-    opacity: 0;}}
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
   --animate-shine: shine var(--duration) infinite linear;
   @keyframes shine {
-  0% {
-    background-position: 0% 0%;}
-  50% {
-    background-position: 100% 100%;}
-  to {
-    background-position: 0% 0%;}}}
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    to {
+      background-position: 0% 0%;
+    }
+  }
+}
 
 :root {
   --radius: 0.625rem;
@@ -165,5 +172,41 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .button-gradient-1 {
+    @apply border border-rose-200
+    bg-gradient-to-tr from-indigo-400 to-rose-400
+    hover:from-rose-400 hover:to-indigo-400
+    dark:from-indigo-400/40 dark:to-rose-400/40
+    dark:hover:from-rose-400/40 dark:hover:to-indigo-400/40
+    text-white font-semibold;
+  }
+  .text-gradient-1 {
+    @apply bg-clip-text text-transparent
+    bg-gradient-to-r from-indigo-400 via-white/5 to-rose-400
+    dark:from-indigo-200 dark:to-rose-500;
+  }
+  .border-gradient-1 {
+    @apply border-purple-200 dark:border-purple-400;
+  }
+
+  /* เปลี่ยนสีลูกศรนำทางเป็นสีชมพู */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: blueviolet !important;
+  }
+
+  /* เปลี่ยนสีจุด pagination */
+  .swiper-pagination-bullet {
+    background-color: rgb(
+      223,
+      194,
+      250
+    ) !important; /* สีชมพูอ่อน (Tailwind's pink-300) */
+    opacity: 1 !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: blueviolet !important;
   }
 }
