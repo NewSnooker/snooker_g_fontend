@@ -23,18 +23,18 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { UserProps } from "@/lib/api/user.type";
 
-export function SideBarNavUser({ user }: { user: UserProps }) {
+export function SideBarNavUser({ user }: { user?: UserProps }) {
   const router = useRouter();
   const { isMobile } = useSidebar();
 
   const handleLogout = async () => {
     try {
       const response = await signOut();
-      if (response.status === "success") {
+      if (response.status === 200) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
         router.refresh();
-      } else if (response.status === "error") {
+      } else if (response.status === 500) {
         toast.error(response.message + " ❌");
       }
     } catch (error) {

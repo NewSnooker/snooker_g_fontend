@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { userSidebarLinks } from "@/lib/sidebarLink";
 import { SideBarNavUser } from "./ui/sidebar-nav-user";
@@ -27,11 +27,10 @@ export function AppSidebar() {
     queryKey: ["user-me"],
     queryFn: getMe,
   });
-  const router = useRouter();
 
   useEffect(() => {
-    if (me?.message === "Token หมดอายุ") {
-      router.refresh();
+    if (me?.status === 403) {
+      window.location.reload();
     }
   }, [me]);
 

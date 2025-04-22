@@ -26,9 +26,6 @@ import PasswordInput from "../PasswordInput";
 import React, { useState } from "react"; // เพิ่ม useState
 import { signinFormSchema } from "@/lib/schemas";
 import { ShineBorder } from "../magicui/shine-border";
-import { cn } from "@/lib/utils";
-import { pacificoFont } from "@/font/font";
-import { WEBSITE_INITIALS } from "@/lib/config";
 import { signIn } from "@/lib/api/auth";
 import LogoTextGradient from "../frontend/LogoTextGradient";
 
@@ -48,11 +45,11 @@ export default function SignInForm() {
     try {
       setIsLoading(true);
       const response = await signIn(values.email, values.password);
-      if (response.status === "success") {
+      if (response.status === 200) {
         toast.success(response.message + " ✅");
         router.push("/home");
         router.refresh();
-      } else if (response.status === "error") {
+      } else {
         toast.error(response.message + " ❌");
       }
     } catch (error) {

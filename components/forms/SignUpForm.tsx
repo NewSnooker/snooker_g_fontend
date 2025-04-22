@@ -54,11 +54,10 @@ export default function SignUpForm() {
         values.email,
         values.password
       );
-      if (response.status === "success") {
+      if (response.status === 201) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
-      }
-      if (response.status === "error") {
+      } else {
         toast.error(response.message + " ❌");
       }
     } catch (error) {

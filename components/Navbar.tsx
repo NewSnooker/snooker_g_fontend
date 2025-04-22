@@ -9,7 +9,6 @@ import { SidebarTrigger } from "./ui/sidebar";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "@/lib/api/user";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Navbar() {
@@ -18,11 +17,11 @@ export default function Navbar() {
     queryFn: getMe,
   });
 
-  const router = useRouter();
+  console.log(me);
 
   useEffect(() => {
-    if (me?.message === "Token หมดอายุ") {
-      router.refresh();
+    if (me?.status === 403) {
+      window.location.reload();
     }
   }, [me]);
 

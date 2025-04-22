@@ -8,6 +8,7 @@ export type UserProps = {
 };
 
 export type GetMeResponse = {
-  status: string;
-  data: UserProps;
+  status: number;
+  data?: UserProps;
+  message?: string;
 };

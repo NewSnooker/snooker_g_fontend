@@ -17,17 +17,17 @@ import { LogOutIcon, UserCircleIcon } from "lucide-react";
 import { WEBSITE_INITIALS } from "@/lib/config";
 import { UserProps } from "@/lib/api/user.type";
 
-export default function AuthenticatedAvatar({ user }: { user: UserProps }) {
+export default function AuthenticatedAvatar({ user }: { user?: UserProps }) {
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
       const response = await signOut();
-      if (response.status === "success") {
+      if (response.status === 200) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
         router.refresh();
-      } else if (response.status === "error") {
+      } else if (response.status === 500) {
         toast.error(response.message + " ❌");
       }
     } catch (error) {

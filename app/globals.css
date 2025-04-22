@@ -187,7 +187,7 @@
     dark:from-indigo-200 dark:to-rose-500;
   }
   .border-gradient-1 {
-    @apply border-purple-200 dark:border-purple-400;
+    @apply border-purple-200 dark:border-purple-950;
   }
 
   /* เปลี่ยนสีลูกศรนำทางเป็นสีชมพู */
