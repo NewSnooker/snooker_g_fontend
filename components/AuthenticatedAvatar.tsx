@@ -9,17 +9,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { signOut } from "@/lib/api/auth";
-import { toast } from "sonner";
 import { LogOutIcon, UserCircleIcon } from "lucide-react";
 import { WEBSITE_INITIALS } from "@/lib/config";
-import { UserProps } from "@/lib/api/user.type";
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "@/lib/api/user";
+import { useEffect } from "react";
+import { signOut } from "@/lib/api/auth";
+import { toast } from "sonner";
+import { getQueryClient } from "@/lib/getQueryClient";
+import { GetMeResponse } from "@/lib/api/user.type";
+import { useRouter } from "next/navigation";
+import { useUser, useUserActions } from "@/app/store/userStore";
 
-export default function AuthenticatedAvatar({ user }: { user?: UserProps }) {
+export default function AuthenticatedAvatar({}) {
+  const queryClient = getQueryClient();
   const router = useRouter();
+  const user = useUser();
+  const { setUser, clearUser } = useUserActions();
 
+  // ดึงข้อมูลผู้ใช้ด้วย React Query
+  const { data } = useQuery<GetMeResponse>({
+    queryKey: ["user-me"],
+    queryFn: getMe,
+  });
+
+  // ฟังก์ชัน logout
   const handleLogout = async () => {
     try {
       const response = await signOut();
@@ -27,20 +42,29 @@ export default function AuthenticatedAvatar({ user }: { user?: UserProps }) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
         router.refresh();
+        clearUser();
+        queryClient.clear();
       } else if (response.status === 500) {
         toast.error(response.message + " ❌");
       }
     } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการออกจากระบบ");
+      console.error("Logout error:", error);
+      clearUser();
     }
   };
+
+  useEffect(() => {
+    if (data?.data && data.status === 200) {
+      setUser(data.data);
+    }
+  }, [data]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer" asChild>
         <Button variant="outline" size="icon" className="rounded-full">
           <Avatar className="h-8 w-8 rounded-lg grayscale">
-            {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
+            <AvatarImage src={user?.imageUrl} alt={user?.username} />
             <AvatarFallback>{WEBSITE_INITIALS}</AvatarFallback>
           </Avatar>
         </Button>
@@ -49,7 +73,7 @@ export default function AuthenticatedAvatar({ user }: { user?: UserProps }) {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
+              <AvatarImage src={user?.imageUrl} alt={user?.username} />
               <AvatarFallback className="rounded-lg">
                 {WEBSITE_INITIALS}
               </AvatarFallback>

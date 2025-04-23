@@ -1,8 +1,5 @@
 "use client";
 
-import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
-import { WEBSITE_INITIALS } from "@/lib/config";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +15,19 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+import { WEBSITE_INITIALS } from "@/lib/config";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut } from "@/lib/api/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { UserProps } from "@/lib/api/user.type";
+import { useUser, useUserActions } from "@/app/store/userStore";
 
-export function SideBarNavUser({ user }: { user?: UserProps }) {
+export function SideBarNavUser() {
   const router = useRouter();
+  const user = useUser();
   const { isMobile } = useSidebar();
+  const { clearUser } = useUserActions();
 
   const handleLogout = async () => {
     try {
@@ -34,14 +36,16 @@ export function SideBarNavUser({ user }: { user?: UserProps }) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
         router.refresh();
+        clearUser();
       } else if (response.status === 500) {
         toast.error(response.message + " ❌");
       }
     } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการออกจากระบบ");
+      console.error("Logout error:", error);
+      clearUser();
     }
   };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -52,7 +56,7 @@ export function SideBarNavUser({ user }: { user?: UserProps }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
+                <AvatarImage src={user?.imageUrl} alt={user?.username} />
                 <AvatarFallback className="rounded-lg">
                   {WEBSITE_INITIALS}
                 </AvatarFallback>
@@ -75,7 +79,7 @@ export function SideBarNavUser({ user }: { user?: UserProps }) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  {/* <AvatarImage src={user.imageUrl} alt={user?.username} /> */}
+                  <AvatarImage src={user?.imageUrl} alt={user?.username} />{" "}
                   <AvatarFallback className="rounded-lg">
                     {WEBSITE_INITIALS}
                   </AvatarFallback>

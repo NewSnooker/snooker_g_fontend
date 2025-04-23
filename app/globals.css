@@ -173,23 +173,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  .button-gradient-1 {
-    @apply border border-rose-200
-    bg-gradient-to-tr from-indigo-400 to-rose-400
-    hover:from-rose-400 hover:to-indigo-400
-    dark:from-indigo-400/40 dark:to-rose-400/40
-    dark:hover:from-rose-400/40 dark:hover:to-indigo-400/40
-    text-white font-semibold;
-  }
-  .text-gradient-1 {
-    @apply bg-clip-text text-transparent
-    bg-gradient-to-r from-indigo-400 via-white/5 to-rose-400
-    dark:from-indigo-200 dark:to-rose-500;
-  }
-  .border-gradient-1 {
-    @apply border-purple-200 dark:border-purple-950;
-  }
-
   /* เปลี่ยนสีลูกศรนำทางเป็นสีชมพู */
   .swiper-button-next,
   .swiper-button-prev {
@@ -208,5 +191,25 @@
 
   .swiper-pagination-bullet-active {
     background-color: blueviolet !important;
+  }
+  .button-gradient-1 {
+    @apply border border-rose-200;
+    @apply bg-gradient-to-tr from-indigo-400 to-rose-400;
+    @apply hover:from-rose-400 hover:to-indigo-400;
+    @apply dark:from-indigo-400/40 dark:to-rose-400/40;
+    @apply dark:hover:from-rose-400/40 dark:hover:to-indigo-400/40;
+    @apply text-white dark:text-white font-semibold;
+  }
+  .text-gradient-1 {
+    @apply bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-indigo-400 via-white/5 to-rose-400;
+    @apply dark:from-indigo-200 dark:to-rose-500;
+  }
+
+  .border-gradient-1 {
+    @apply border-purple-200 dark:border-purple-950;
+  }
+  .text-stroke-white {
+    -webkit-text-stroke: 1px white;
   }
 }

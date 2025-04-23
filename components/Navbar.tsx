@@ -1,3 +1,4 @@
+// components/Navbar.tsx
 "use client";
 import AuthenticatedAvatar from "./AuthenticatedAvatar";
 import { cn } from "@/lib/utils";
@@ -7,37 +8,24 @@ import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { getMe } from "@/lib/api/user";
-import { useEffect } from "react";
 
 export default function Navbar() {
-  const { data: me } = useQuery({
-    queryKey: ["user-me"],
-    queryFn: getMe,
-  });
-
-  console.log(me);
-
-  useEffect(() => {
-    if (me?.status === 403) {
-      window.location.reload();
-    }
-  }, [me]);
-
   return (
-    <div className="bg-card flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b">
-      <div className="flex gap-4">
+    <nav className="bg-card flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b sticky top-0 z-10">
+      <div className="flex gap-4 items-center">
         <SidebarTrigger />
-        <Button
-          variant="ghost"
-          size={"icon"}
-          className="flex items-center sm:hidden"
-        >
-          <Link
-            href="/"
-            className=" text-xl font-bold tracking-tight rounded-full"
+        <Link href="/" className="hidden sm:block">
+          <span
+            className={cn(
+              "text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-rose-300",
+              pacificoFont.className
+            )}
           >
+            {WEBSITE_INITIALS}
+          </span>
+        </Link>
+        <Button variant="ghost" size="icon" className="sm:hidden" asChild>
+          <Link href="/">
             <span
               className={cn(
                 "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-rose-300",
@@ -49,10 +37,11 @@ export default function Navbar() {
           </Link>
         </Button>
       </div>
-      <div className="flex gap-2">
+
+      <div className="flex gap-2 items-center">
         <ModeToggle />
-        <AuthenticatedAvatar user={me?.data} />
+        <AuthenticatedAvatar />
       </div>
-    </div>
+    </nav>
   );
 }

@@ -17,22 +17,9 @@ import { cn } from "@/lib/utils";
 import { userSidebarLinks } from "@/lib/sidebarLink";
 import { SideBarNavUser } from "./ui/sidebar-nav-user";
 import LogoTextGradient from "./frontend/LogoTextGradient";
-import { useQuery } from "@tanstack/react-query";
-import { getMe } from "@/lib/api/user";
-import { useEffect } from "react";
 
 export function AppSidebar() {
   const pathname = usePathname(); // ดึงเส้นทางปัจจุบัน
-  const { data: me } = useQuery({
-    queryKey: ["user-me"],
-    queryFn: getMe,
-  });
-
-  useEffect(() => {
-    if (me?.status === 403) {
-      window.location.reload();
-    }
-  }, [me]);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
@@ -73,7 +60,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SideBarNavUser user={me?.data} />
+        <SideBarNavUser />
       </SidebarFooter>
     </Sidebar>
   );

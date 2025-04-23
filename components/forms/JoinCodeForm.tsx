@@ -68,7 +68,9 @@ export default function JoinCodeForm() {
                       autoComplete="joinCode"
                       disabled={isLoading}
                       {...field}
-                      className="pr-28 w-72 h-10 sm:w-96 sm:h-12 placeholder:text-muted-foreground border-0 focus:outline-none focus:ring-0 focus:ring-offset-0" // กันพื้นที่ให้ปุ่ม
+                      className={`bg-background dark:bg-background placeholder:text-base placeholder:text-black dark:placeholder:text-white
+                         pr-28 w-72 h-10 sm:w-96 sm:h-12
+                         border-0 focus:border-0 focus:outline-none focus:ring-0 focus:ring-offset-0v`} // กันพื้นที่ให้ปุ่ม
                     />
                   </FormControl>
 
@@ -77,7 +79,7 @@ export default function JoinCodeForm() {
                     size="sm"
                     disabled={isLoading}
                     className={cn(
-                      "font-bold border  absolute right-1 top-1/2 -translate-y-1/2 px-4 button-gradient-1 transition-colors duration-300 "
+                      "font-bold border absolute right-1 top-1/2 -translate-y-1/2 px-4 button-gradient-1 transition-colors duration-300 ease-in-out"
                     )}
                   >
                     {isLoading ? "กำลังเข้าห้อง..." : "JOIN"}

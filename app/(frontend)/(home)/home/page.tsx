@@ -71,11 +71,16 @@ export default async function page() {
               "text-3xl sm:text-4xl md:text-6xl font-bold mb-6 md:mb-10 tracking-tight "
             )}
           >
-            <span className={cn("text-gradient-1", pacificoFont.className)}>
+            <span
+              className={cn("text-gradient-1 z-10 ", pacificoFont.className)}
+            >
               {WEBSITE_NAME}
             </span>
           </h1>
-          <JoinCodeForm />
+          <div className="relative">
+            <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 blur-3xl opacity-60 rounded-2xl z-[-1] bg-gradient-to-r from-indigo-400 via-white/5 to-rose-400"></div>
+            <JoinCodeForm />
+          </div>
         </div>
         <div className="z-10 max-w-xs sm:max-w-3xl md:max-w-5xl xl:max-w-7xl flex flex-col items-center justify-center gap-6">
           <div className="w-full flex items-center justify-between px-4 sm:px-0 border-b border-gradient-1 pb-4">

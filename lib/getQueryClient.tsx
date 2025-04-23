@@ -7,7 +7,7 @@ const makQueryClient = () => {
       queries: {
         // ตั้งเวลาที่ query จะถือว่ายังใหม่อยู่ (ไม่โหลดซ้ำ) = 1 นาที
         // staleTime: 1000 * 60,
-        // staleTime: 0,
+        staleTime: 0,
       },
     },
   });
