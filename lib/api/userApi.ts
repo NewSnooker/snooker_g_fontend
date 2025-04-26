@@ -3,16 +3,13 @@ import { imageUrlBody } from "../types/common";
 import { backend } from "./apiClient";
 
 export const getMe = async () => {
-  const { data } = await backend.api.user.me.get(
-    {},
-    {
-      fetch: { credentials: "include" },
-    }
-  );
+  const { data } = await backend.api.user.me.get({
+    fetch: { credentials: "include" },
+  });
   return data;
 };
 export const updateAvatar = async (id: string, imageUrl: imageUrlBody) => {
-  const { data } = await backend.api.user.avatar.put(
+  const { data } = await backend.api.user.avatar({ id }).put(
     {
       avatar: imageUrl,
     },
@@ -24,12 +21,11 @@ export const updateAvatar = async (id: string, imageUrl: imageUrlBody) => {
   return data;
 };
 export const updateUsername = async (id: string, username: string) => {
-  const { data } = await backend.api.user.username.put(
+  const { data } = await backend.api.user.username({ id }).put(
     {
       username: username,
     },
     {
-      query: { id },
       fetch: { credentials: "include" },
     }
   );
