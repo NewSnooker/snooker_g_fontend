@@ -1,4 +1,4 @@
-import { WEBSITE_NAME } from "@/lib/config";
+import { WEBSITE_NAME } from "@/lib/config/constant";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

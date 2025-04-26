@@ -1,6 +1,6 @@
 "use client";
 
-import { getQueryClient } from "@/lib/getQueryClient";
+import { getQueryClient } from "@/lib/utils";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 export default function QueryProvider({

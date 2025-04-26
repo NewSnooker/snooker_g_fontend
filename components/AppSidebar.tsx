@@ -14,8 +14,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { userSidebarLinks } from "@/lib/sidebarLink";
-import { SideBarNavUser } from "./ui/sidebar-nav-user";
+import { userSidebarLinks } from "@/lib/config/sidebarLink";
+import { SideBarNavUser } from "./auth/SidebarNavUser";
 import LogoTextGradient from "./frontend/LogoTextGradient";
 
 export function AppSidebar() {

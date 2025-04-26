@@ -22,15 +22,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import PasswordInput from "../PasswordInput";
+import PasswordInput from "./PasswordInput";
 import React, { useState } from "react"; // เพิ่ม useState
-import { signupFormSchema } from "@/lib/schemas";
+import { signupFormSchema } from "@/lib/config/schemas";
 import { ShineBorder } from "../magicui/shine-border";
-import { cn } from "@/lib/utils";
-import { pacificoFont } from "@/font/font";
-import { WEBSITE_INITIALS } from "@/lib/config";
-import { signUp } from "@/lib/api/auth";
+import { signUp } from "@/lib/api/authApi";
 import LogoTextGradient from "../frontend/LogoTextGradient";
+import { GoogleLoginButton } from "./GoogleLoginButton";
+import { Loader2 } from "lucide-react";
+import { DEFAULT_ERROR_MESSAGE } from "@/lib/config/constant";
 
 export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ เพิ่ม state โหลดดิ้ง
@@ -58,11 +58,11 @@ export default function SignUpForm() {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
       } else {
-        toast.error(response.message + " ❌");
+        toast.error(response?.message || DEFAULT_ERROR_MESSAGE);
       }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการลงทะเบียน");
+      toast.error(DEFAULT_ERROR_MESSAGE);
     } finally {
       setIsLoading(false);
     }
@@ -176,12 +176,15 @@ export default function SignUpForm() {
               />
 
               {/* Submit button */}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "กำลังสมัคร..." : "Sign Up"}
+              <Button
+                type="submit"
+                className="w-full rounded-sm"
+                disabled={isLoading}
+              >
+                {isLoading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
+                Save
               </Button>
-              <Button variant="outline" className="w-full" disabled={isLoading}>
-                Sign Up with Google
-              </Button>
+              <GoogleLoginButton text="signup_with" />
             </div>
           </form>
         </Form>

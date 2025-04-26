@@ -22,12 +22,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import PasswordInput from "../PasswordInput";
+import PasswordInput from "./PasswordInput";
 import React, { useState } from "react"; // เพิ่ม useState
-import { signinFormSchema } from "@/lib/schemas";
+import { signinFormSchema } from "@/lib/config/schemas";
 import { ShineBorder } from "../magicui/shine-border";
-import { signIn } from "@/lib/api/auth";
+import { signIn } from "@/lib/api/authApi";
 import LogoTextGradient from "../frontend/LogoTextGradient";
+import { GoogleLoginButton } from "./GoogleLoginButton";
+import { Loader2 } from "lucide-react";
+import { DEFAULT_ERROR_MESSAGE } from "@/lib/config/constant";
 
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ เพิ่ม state โหลดดิ้ง
@@ -45,16 +48,18 @@ export default function SignInForm() {
     try {
       setIsLoading(true);
       const response = await signIn(values.email, values.password);
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         toast.success(response.message + " ✅");
+        console.log(response);
+
         router.push("/home");
         router.refresh();
       } else {
-        toast.error(response.message + " ❌");
+        toast.error(response?.message || DEFAULT_ERROR_MESSAGE);
       }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("เกิดข้อผิดพลาดในการล็อกอิน");
+      toast.error(DEFAULT_ERROR_MESSAGE);
     } finally {
       setIsLoading(false); // ✅ หยุดโหลด ไม่ว่าจะสำเร็จหรือไม่
     }
@@ -129,12 +134,15 @@ export default function SignInForm() {
               />
 
               {/* Submit button */}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "กำลังเข้าสู่ระบบ..." : "Login"}
+              <Button
+                type="submit"
+                className="w-full rounded-sm"
+                disabled={isLoading}
+              >
+                {isLoading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
+                Save
               </Button>
-              <Button variant="outline" className="w-full" disabled={isLoading}>
-                Login with Google
-              </Button>
+              <GoogleLoginButton text="signin_with" />
             </div>
           </form>
         </Form>

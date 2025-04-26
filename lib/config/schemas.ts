@@ -37,6 +37,25 @@ export const signinFormSchema = z.object({
     .max(20, { message: "รหัสผ่านต้องไม่เกิน 20 ตัวอักษร" })
     .regex(/[a-zA-Z0-9]/, { message: "ต้องมีตัวอักษรและเลขอย่างน้อย 1 ตัว" }),
 });
+// export type imageUrl = {
+//   name: string;
+//   key: string;
+//   url: string;
+// };
+
+export const imageFormSchema = z.object({
+  name: z.string(),
+  key: z.string(),
+  url: z.string(),
+});
+
+export const accountFormSchema = z.object({
+  username: z
+    .string()
+    .max(20, { message: "ชื่อต้องไม่เกิน 20 ตัวอักษร" })
+    .min(5, { message: "ชื่อต้องมีอย่างน้อย 5 ตัวอักษร" }),
+});
+
 export const joinCodeFormSchema = z.object({
   joinCode: z
     .string()

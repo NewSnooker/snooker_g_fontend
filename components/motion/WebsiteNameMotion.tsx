@@ -2,7 +2,7 @@
 
 import React from "react";
 import { pacificoFont } from "@/font/font";
-import { WEBSITE_NAME } from "@/lib/config";
+import { WEBSITE_NAME } from "@/lib/config/constant";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 export const fadeUpVariants = {

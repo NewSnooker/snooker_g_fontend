@@ -1,5 +1,5 @@
 import { pacificoFont } from "@/font/font";
-import { WEBSITE_INITIALS } from "@/lib/config";
+import { WEBSITE_INITIALS } from "@/lib/config/constant";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";

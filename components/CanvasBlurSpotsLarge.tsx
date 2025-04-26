@@ -1,4 +1,3 @@
-// components/CanvasBlurSpotsLarge.tsx
 "use client";
 
 import React, { useRef, useEffect } from "react";
@@ -22,9 +21,11 @@ export default function CanvasBlurSpotsLarge({
     [255, 100, 500],
     [255, 200, 100],
   ],
+  random = false,
 }: {
   count?: number;
   colors?: [number, number, number][];
+  random?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -38,16 +39,27 @@ export default function CanvasBlurSpotsLarge({
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
 
-    // สร้าง spots แบบ static
-    const spots: Spot[] = Array.from({ length: count }).map(() => {
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      return {
-        x: randomBetween(0, w),
-        y: randomBetween(0, h),
-        radius: randomBetween(170, 400),
-        color,
-      };
-    });
+    // ถ้าไม่สุ่ม ให้ใช้ค่า fixed ที่กำหนดไว้ภายใน component
+    let spots: Spot[] = [];
+
+    if (!random) {
+      spots = [
+        { x: 200, y: 150, radius: 300, color: [255, 100, 100] },
+        { x: 600, y: 400, radius: 250, color: [100, 200, 255] },
+        { x: 400, y: 300, radius: 200, color: [255, 200, 100] },
+        { x: 800, y: 500, radius: 350, color: [255, 100, 500] },
+      ];
+    } else {
+      spots = Array.from({ length: count }).map(() => {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        return {
+          x: randomBetween(0, w),
+          y: randomBetween(0, h),
+          radius: randomBetween(170, 400),
+          color,
+        };
+      });
+    }
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
@@ -66,7 +78,6 @@ export default function CanvasBlurSpotsLarge({
 
     draw();
 
-    // รีไซส์แล้วลงใหม่
     function onResize() {
       w = canvas.offsetWidth;
       h = canvas.offsetHeight;
@@ -75,12 +86,12 @@ export default function CanvasBlurSpotsLarge({
       ctx.scale(dpr, dpr);
       draw();
     }
-    window.addEventListener("resize", onResize);
 
+    window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("resize", onResize);
     };
-  }, [count, colors]);
+  }, [count, colors, random]);
 
   return (
     <canvas

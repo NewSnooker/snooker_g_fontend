@@ -1,8 +1,8 @@
 import Navbar from "@/components/Navbar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { getMe } from "@/lib/api/user";
-import { getQueryClient } from "@/lib/getQueryClient";
+import { getMe } from "@/lib/api/userApi";
+import { getQueryClient } from "@/lib/utils";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { cookies } from "next/headers";
 

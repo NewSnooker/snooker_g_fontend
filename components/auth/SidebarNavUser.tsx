@@ -16,33 +16,32 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
-import { WEBSITE_INITIALS } from "@/lib/config";
+import { WEBSITE_INITIALS } from "@/lib/config/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { signOut } from "@/lib/api/auth";
+import { signOut } from "@/lib/api/authApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useUser, useUserActions } from "@/app/store/userStore";
+import Link from "next/link";
+import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
 
 export function SideBarNavUser() {
   const router = useRouter();
-  const user = useUser();
   const { isMobile } = useSidebar();
-  const { clearUser } = useUserActions();
+  const { data: response } = useMeQuery();
+  const data = response?.data;
 
   const handleLogout = async () => {
     try {
       const response = await signOut();
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");
         router.refresh();
-        clearUser();
-      } else if (response.status === 500) {
+      } else if (response && response.status === 500) {
         toast.error(response.message + " ❌");
       }
     } catch (error) {
       console.error("Logout error:", error);
-      clearUser();
     }
   };
 
@@ -55,16 +54,19 @@ export function SideBarNavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user?.imageUrl} alt={user?.username} />
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage
+                  src={data?.imageUrl.url}
+                  alt={data?.imageUrl.name}
+                />
                 <AvatarFallback className="rounded-lg">
                   {WEBSITE_INITIALS}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user?.username}</span>
+                <span className="truncate font-medium">{data?.username}</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  {user?.email}
+                  {data?.email}
                 </span>
               </div>
               <MoreVerticalIcon className="ml-auto size-4" />
@@ -79,25 +81,31 @@ export function SideBarNavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.imageUrl} alt={user?.username} />{" "}
+                  <AvatarImage
+                    src={data?.imageUrl.url}
+                    alt={data?.imageUrl.name}
+                  />
                   <AvatarFallback className="rounded-lg">
                     {WEBSITE_INITIALS}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user?.username}</span>
+                  <span className="truncate font-medium">{data?.username}</span>
                   <span className="truncate text-xs text-muted-foreground">
-                    {user?.email}
+                    {data?.email}
                   </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircleIcon />
-                บัญชีของฉัน
-              </DropdownMenuItem>
+              <Link href={"/account"}>
+                {" "}
+                <DropdownMenuItem>
+                  <UserCircleIcon />
+                  บัญชีของฉัน
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} variant="destructive">

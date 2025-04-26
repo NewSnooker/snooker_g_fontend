@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
 import React, { useState } from "react"; // เพิ่ม useState
-import { joinCodeFormSchema } from "@/lib/schemas";
+import { joinCodeFormSchema } from "@/lib/config/schemas";
 import { cn } from "@/lib/utils";
 import { ShineBorder } from "../magicui/shine-border";
 

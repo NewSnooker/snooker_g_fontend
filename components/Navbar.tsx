@@ -1,17 +1,17 @@
 // components/Navbar.tsx
 "use client";
-import AuthenticatedAvatar from "./AuthenticatedAvatar";
 import { cn } from "@/lib/utils";
 import { pacificoFont } from "@/font/font";
-import { WEBSITE_INITIALS } from "@/lib/config";
+import { WEBSITE_INITIALS } from "@/lib/config/constant";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 import Link from "next/link";
+import AuthenticatedAvatar from "./auth/AuthenticatedAvatar";
 
 export default function Navbar() {
   return (
-    <nav className="bg-card flex justify-between py-2 px-6 transparent backdrop-blur-2xl border-b sticky top-0 z-10">
+    <nav className="bg-card flex justify-between p-2 sm:px-6 transparent backdrop-blur-2xl border-b sticky top-0 z-10">
       <div className="flex gap-4 items-center">
         <SidebarTrigger />
         <Link href="/" className="hidden sm:block">

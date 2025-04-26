@@ -2,14 +2,16 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { pacificoFont } from "@/font/font";
 import Link from "next/link";
 import ElegantShapeMotion from "@/components/motion/ElegantShapeMotion";
 import WebsiteNameMotion, {
   fadeUpVariants,
 } from "@/components/motion/WebsiteNameMotion";
+import { useUser } from "../../lib/store/userStore";
 
 export default function HeroGeometric() {
+  const auth = useUser();
+
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-500/[0.15] via-rose-500/[0.10] to-indigo-500/[0.15] dark:bg-[#030303]">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-200/[0.05] via-transparent to-rose-200/[0.05] dark:from-indigo-500/[0.05] dark:to-rose-500/[0.05] blur-3xl" />
@@ -75,7 +77,7 @@ export default function HeroGeometric() {
               world in a style like no other."
             </p>
           </motion.div>
-          <Link href="/sign-in" className="inline-block ">
+          <Link href={auth ? "/home" : "/sign-in"} className="inline-block ">
             <motion.button
               custom={3}
               variants={fadeUpVariants}
