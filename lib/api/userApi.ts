@@ -1,9 +1,9 @@
 // src/lib/api/user.ts
 import { imageUrlBody } from "../types/common";
-import { Treaty } from "./apiClient";
+import { backend } from "./apiClient";
 
 export const getMe = async () => {
-  const { data } = await Treaty.api.user.me.get(
+  const { data } = await backend.api.user.me.get(
     {},
     {
       fetch: { credentials: "include" },
@@ -12,7 +12,7 @@ export const getMe = async () => {
   return data;
 };
 export const updateAvatar = async (id: string, imageUrl: imageUrlBody) => {
-  const { data } = await Treaty.api.user.avatar.put(
+  const { data } = await backend.api.user.avatar.put(
     {
       avatar: imageUrl,
     },
@@ -24,7 +24,7 @@ export const updateAvatar = async (id: string, imageUrl: imageUrlBody) => {
   return data;
 };
 export const updateUsername = async (id: string, username: string) => {
-  const { data } = await Treaty.api.user.username.put(
+  const { data } = await backend.api.user.username.put(
     {
       username: username,
     },

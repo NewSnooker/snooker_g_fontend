@@ -1,11 +1,11 @@
-import { Treaty } from "./apiClient";
+import { backend } from "./apiClient";
 
 export const signUp = async (
   username: string,
   email: string,
   password: string
 ) => {
-  const { data } = await Treaty.api.auth["sign-up"].post(
+  const { data } = await backend.api.auth["sign-up"].post(
     {
       username,
       email,
@@ -19,7 +19,7 @@ export const signUp = async (
 };
 
 export const signIn = async (email: string, password: string) => {
-  const { data } = await Treaty.api.auth["sign-in"].post(
+  const { data } = await backend.api.auth["sign-in"].post(
     {
       email,
       password,
@@ -31,7 +31,7 @@ export const signIn = async (email: string, password: string) => {
   return data;
 };
 export const signInWithGoogle = async (idToken: string) => {
-  const { data } = await Treaty.api.auth["sign-in"].google.post(
+  const { data } = await backend.api.auth["sign-in"].google.post(
     {
       idToken,
     },
@@ -43,7 +43,7 @@ export const signInWithGoogle = async (idToken: string) => {
 };
 
 export const signOut = async () => {
-  const { data } = await Treaty.api.auth["sign-out"].post(
+  const { data } = await backend.api.auth["sign-out"].post(
     {},
     {
       fetch: { credentials: "include" },
