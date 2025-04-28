@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
@@ -21,9 +22,7 @@
       "@backend/*": [
         "../backend/src/*"
       ],
-      "@elysiajs/*": [
-        "../backend/node_modules/@elysiajs/*"
-      ],
+      // "@backend/*": ["../backend/dist/types/*"],  // ชี้ไป dist/types แค่ .d.ts
       "@/*": [
         "./*"
       ]
@@ -35,12 +34,14 @@
     ]
   },
   "include": [
-    "next-env.d.ts",
     ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "build/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "../backend"
   ]
 }
