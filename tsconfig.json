@@ -12,7 +12,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
@@ -22,7 +21,6 @@
       "@backend/*": [
         "../backend/src/*"
       ],
-      // "@backend/*": ["../backend/dist/types/*"],  // ชี้ไป dist/types แค่ .d.ts
       "@/*": [
         "./*"
       ]

@@ -37,11 +37,6 @@ export const signinFormSchema = z.object({
     .max(20, { message: "รหัสผ่านต้องไม่เกิน 20 ตัวอักษร" })
     .regex(/[a-zA-Z0-9]/, { message: "ต้องมีตัวอักษรและเลขอย่างน้อย 1 ตัว" }),
 });
-// export type imageUrl = {
-//   name: string;
-//   key: string;
-//   url: string;
-// };
 
 export const imageFormSchema = z.object({
   name: z.string(),

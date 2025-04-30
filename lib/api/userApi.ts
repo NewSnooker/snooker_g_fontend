@@ -1,5 +1,4 @@
-// src/lib/api/user.ts
-import { imageUrlBody } from "../types/common";
+import { imageBody } from "../types/common";
 import { backend } from "./apiClient";
 
 export const getMe = async () => {
@@ -8,20 +7,20 @@ export const getMe = async () => {
   });
   return data;
 };
-export const updateAvatar = async (id: string, imageUrl: imageUrlBody) => {
-  const { data } = await backend.api.user.avatar({ id }).put(
+export const updateAvatar = async (id: string, image: imageBody) => {
+  const { data } = await backend.api.user.me.avatar({ id }).put(
     {
-      avatar: imageUrl,
+      avatar: image,
     },
     {
-      query: { id },
       fetch: { credentials: "include" },
     }
   );
   return data;
 };
+
 export const updateUsername = async (id: string, username: string) => {
-  const { data } = await backend.api.user.username({ id }).put(
+  const { data } = await backend.api.user.me.username({ id }).put(
     {
       username: username,
     },

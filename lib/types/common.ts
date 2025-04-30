@@ -1,10 +1,10 @@
-export type imageUrlBody = {
+export type imageBody = {
   name: string;
   key: string;
   url: string;
 };
 
-export type imageUrlProps = {
+export type imageProps = {
   id: string;
   name: string;
   key: string;

@@ -1,10 +1,10 @@
-import { imageUrlProps } from "./common";
+import { imageProps } from "./common";
 
 export type UserProps = {
   id: string;
   email: string;
   username: string;
-  imageUrl: imageUrlProps;
+  image: imageProps;
   createdAt: Date;
   updatedAt: Date;
 };

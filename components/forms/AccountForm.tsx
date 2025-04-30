@@ -83,7 +83,7 @@ export default function AccountForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid gap-4">
-              {/* imageUrl */}
+              {/* image */}
               <div className="grid auto-rows-max items-start gap-4 ">
                 <AvatarUpload
                   isLoading={isLoading}
