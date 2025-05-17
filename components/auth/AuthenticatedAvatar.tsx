@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOutIcon, UserCircleIcon } from "lucide-react";
+import { LogOutIcon, Shield, UserCircleIcon } from "lucide-react";
 import { DEFAULT_ERROR_MESSAGE, WEBSITE_INITIALS } from "@/lib/config/constant";
 import { signOut } from "@/lib/api/authApi";
 import { toast } from "sonner";
@@ -18,12 +18,15 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
 import Link from "next/link";
+import { hasAdminRole } from "@/lib/utils/auth";
 
 export default function AuthenticatedAvatar({}) {
   const queryClient = getQueryClient();
   const router = useRouter();
   const { data: response } = useMeQuery();
   const data = response?.data;
+  const roles = data?.roles;
+  const isAdmin = hasAdminRole(roles);
 
   const handleLogout = async () => {
     try {
@@ -72,6 +75,15 @@ export default function AuthenticatedAvatar({}) {
 
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {isAdmin && (
+            <Link href={"/dashboard"}>
+              {" "}
+              <DropdownMenuItem>
+                <Shield />
+                ผู้ดูแลระบบ
+              </DropdownMenuItem>
+            </Link>
+          )}
           <Link href={"/account"}>
             {" "}
             <DropdownMenuItem>

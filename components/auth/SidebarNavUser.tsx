@@ -15,7 +15,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+import {
+  LogOutIcon,
+  MoreVerticalIcon,
+  Shield,
+  UserCircleIcon,
+} from "lucide-react";
 import { WEBSITE_INITIALS } from "@/lib/config/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut } from "@/lib/api/authApi";
@@ -23,12 +28,15 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
+import { hasAdminRole } from "@/lib/utils/auth";
 
 export function SideBarNavUser() {
   const router = useRouter();
   const { isMobile } = useSidebar();
   const { data: response } = useMeQuery();
   const data = response?.data;
+  const roles = data?.roles;
+  const isAdmin = hasAdminRole(roles);
 
   const handleLogout = async () => {
     try {
@@ -93,6 +101,15 @@ export function SideBarNavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              {isAdmin && (
+                <Link href={"/dashboard"}>
+                  {" "}
+                  <DropdownMenuItem>
+                    <Shield />
+                    ผู้ดูแลระบบ
+                  </DropdownMenuItem>
+                </Link>
+              )}
               <Link href={"/account"}>
                 {" "}
                 <DropdownMenuItem>

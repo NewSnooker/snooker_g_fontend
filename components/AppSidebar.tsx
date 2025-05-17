@@ -14,11 +14,14 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { userSidebarLinks } from "@/lib/config/sidebarLink";
 import { SideBarNavUser } from "./auth/SidebarNavUser";
 import LogoTextGradient from "./frontend/LogoTextGradient";
-
-export function AppSidebar() {
+import { SidebarLinkProps } from "@/lib/types/common";
+export function AppSidebar({
+  sidebarLinks,
+}: {
+  sidebarLinks: SidebarLinkProps[];
+}) {
   const pathname = usePathname(); // ดึงเส้นทางปัจจุบัน
 
   return (
@@ -31,7 +34,7 @@ export function AppSidebar() {
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {userSidebarLinks.map((item) => {
+              {sidebarLinks.map((item) => {
                 // กำหนด active state โดยเปรียบเทียบ URL ปัจจุบันกับ item.href
                 const isActive = pathname === item.href;
                 return (
@@ -46,7 +49,7 @@ export function AppSidebar() {
                       )}
                     >
                       <Link href={item.href}>
-                        <item.icon className="h-4 w-4" />
+                        {item.icon}
                         <span className="group-data-[collapsible=icon]:hidden">
                           {item.title}
                         </span>

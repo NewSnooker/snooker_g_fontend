@@ -140,7 +140,7 @@ export default function SignInForm() {
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
-                Save
+                Sign In
               </Button>
               <GoogleLoginButton text="signin_with" />
             </div>

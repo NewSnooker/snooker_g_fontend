@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -24,22 +29,17 @@
       "@/*": [
         "./*"
       ]
-    },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ]
+    }
   },
   "include": [
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts",
+    "components/dataTable/DataTable.2tsx",
     "next-env.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
     "build/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "../backend"
+    "node_modules"
   ]
 }

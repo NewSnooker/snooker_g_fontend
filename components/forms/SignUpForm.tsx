@@ -182,7 +182,7 @@ export default function SignUpForm() {
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
-                Save
+                Sign Up
               </Button>
               <GoogleLoginButton text="signup_with" />
             </div>

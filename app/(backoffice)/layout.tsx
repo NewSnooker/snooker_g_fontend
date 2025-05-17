@@ -1,13 +1,17 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import Navbar from "@/components/Navbar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-
+import { adminSidebarLinks } from "@/lib/config/sidebarLink";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
         {/* Sidebar (ถ้าต้องการให้ซ่อนใน mobile ใช้ hidden md:block) */}
-        <AppSidebar />
+        <AppSidebar sidebarLinks={adminSidebarLinks} />
 
         {/* Main Content */}
         <div className="flex flex-col flex-1 ">
