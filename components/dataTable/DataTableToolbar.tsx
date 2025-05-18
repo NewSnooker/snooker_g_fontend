@@ -1,3 +1,5 @@
+"use client";
+
 import { Cross2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -9,6 +11,7 @@ import Link from "next/link";
 import { Download, FunnelX, Trash, X } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
+import { DateRangeFilter } from "./DateRangeFilter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -48,12 +51,12 @@ export function DataTableToolbar<TData>({
             onChange={(event) => setGlobalFilter(event.target.value)}
             className="h-8 w-full sm:w-[150px] lg:w-[250px]"
           />
-
           {filterableColumns.map((columnId) => {
             const column = table.getColumn(columnId);
             if (!column) return null;
 
             const cfg = filterConfig[columnId as keyof typeof filterConfig];
+            if (columnId === "createdAt") return null;
             return (
               <DataTableFacetedFilter
                 key={columnId}
@@ -63,7 +66,21 @@ export function DataTableToolbar<TData>({
               />
             );
           })}
-
+          {filterableColumns
+            .filter((columnId) => columnId === "createdAt")
+            .map((columnId) => {
+              const column = table.getColumn(columnId);
+              if (!column) return null;
+              const cfg = filterConfig[columnId as keyof typeof filterConfig];
+              return (
+                <DateRangeFilter
+                  key={columnId}
+                  column={column}
+                  title={cfg ? cfg.title : columnId}
+                  options={cfg ? [...cfg.options] : undefined}
+                />
+              );
+            })}
           {isFiltered && (
             <Button
               variant="ghost"
@@ -80,7 +97,6 @@ export function DataTableToolbar<TData>({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0 sm:ml-auto">
-          {/* กลุ่มปุ่มที่เกี่ยวข้องกับการเลือก */}
           {selectedRows.length > 0 && (
             <div className="flex flex-wrap items-center gap-1">
               <Button
@@ -134,7 +150,6 @@ export function DataTableToolbar<TData>({
               </Button>
             </div>
           )}
-          {/* ปุ่มสร้าง */}
           {createPath && titleText && (
             <Link href={createPath}>
               <Button variant="outline" size="sm" className="h-8">
@@ -143,7 +158,6 @@ export function DataTableToolbar<TData>({
               </Button>
             </Link>
           )}
-
           <DataTableViewOptions table={table} />
         </div>
       </div>
