@@ -1,21 +1,23 @@
 "use client";
 
-import { Cross2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableFacetedFilter } from "./DataTableFacetedFilter";
+import { DataTableSelectFilter } from "./DataTableSelectFilter";
 import { DataTableViewOptions } from "./DataTableViewOptions";
-import { filterConfig } from "./DataTable.config";
 import Link from "next/link";
 import { Download, FunnelX, Trash, X } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
-import { DateRangeFilter } from "./DateRangeFilter";
+import { DataTableDateRangeFilter } from "./DateRangeFilter";
+import { FilterConfig } from "@/lib/types/filterConfig";
+import { DataTableBooleanFilter } from "./DataTableBooleanFilter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filterableColumns?: string[];
+  filterConfig: FilterConfig;
   globalFilter: string;
   createPath?: string;
   titleText?: string;
@@ -27,6 +29,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
   filterableColumns = [],
+  filterConfig,
   globalFilter,
   createPath,
   titleText,
@@ -55,32 +58,52 @@ export function DataTableToolbar<TData>({
             const column = table.getColumn(columnId);
             if (!column) return null;
 
-            const cfg = filterConfig[columnId as keyof typeof filterConfig];
-            if (columnId === "createdAt") return null;
-            return (
-              <DataTableFacetedFilter
-                key={columnId}
-                column={column}
-                title={cfg ? cfg.title : columnId}
-                options={cfg ? [...cfg.options] : undefined}
-              />
-            );
+            const cfg = filterConfig[columnId];
+            if (!cfg) return null;
+
+            switch (cfg.type) {
+              case "select":
+                return (
+                  <DataTableSelectFilter
+                    key={columnId}
+                    column={column}
+                    title={cfg.title}
+                    options={cfg.options}
+                  />
+                );
+              case "boolean":
+                return (
+                  <DataTableBooleanFilter
+                    key={columnId}
+                    column={column}
+                    title={cfg.title}
+                    options={cfg.options || []}
+                  />
+                );
+              case "dateRange":
+                return (
+                  <DataTableDateRangeFilter
+                    key={columnId}
+                    column={column}
+                    title={cfg.title}
+                    options={cfg.options}
+                    dateFormat={cfg.dateFormat}
+                  />
+                );
+              case "text":
+                return (
+                  <Input
+                    key={columnId}
+                    placeholder={cfg.title}
+                    value={(column.getFilterValue() as string) || ""}
+                    onChange={(e) => column.setFilterValue(e.target.value)}
+                    className="h-8 w-[150px] text-xs"
+                  />
+                );
+              default:
+                return null;
+            }
           })}
-          {filterableColumns
-            .filter((columnId) => columnId === "createdAt")
-            .map((columnId) => {
-              const column = table.getColumn(columnId);
-              if (!column) return null;
-              const cfg = filterConfig[columnId as keyof typeof filterConfig];
-              return (
-                <DateRangeFilter
-                  key={columnId}
-                  column={column}
-                  title={cfg ? cfg.title : columnId}
-                  options={cfg ? [...cfg.options] : undefined}
-                />
-              );
-            })}
           {isFiltered && (
             <Button
               variant="ghost"

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableToolbar } from "./DataTableToolbar";
-import { filterConfig } from "./DataTable.config";
+import { FilterConfig } from "@/lib/types/filterConfig";
 
 interface ApiResponse<TData> {
   data: TData[];
@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   apiUrl: string;
   filterableColumns?: string[];
+  filterConfig: FilterConfig;
   tableKey: string;
   createPath?: string;
   titleText?: string;
@@ -76,6 +77,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   columns,
   apiUrl,
   filterableColumns = [],
+  filterConfig,
   createPath,
   titleText,
   tableKey,
@@ -118,10 +120,9 @@ export function DataTable<TData extends { id: string }, TValue>({
     }
 
     tableState.columnFilters.forEach(({ id, value }: any) => {
-      const cfg = filterConfig[id as keyof typeof filterConfig];
+      const cfg = filterConfig[id];
       if (cfg) {
-        const values = Array.isArray(value) ? value : [value];
-        values.forEach((val: any) => params.append(cfg.param, String(val)));
+        params.append(cfg.param, cfg.pick(value));
       } else {
         const val = Array.isArray(value) ? value[0] : value;
         params.append(id, String(val));
@@ -256,6 +257,7 @@ export function DataTable<TData extends { id: string }, TValue>({
       <DataTableToolbar
         table={table}
         filterableColumns={filterableColumns}
+        filterConfig={filterConfig}
         globalFilter={tableState.globalFilter}
         setGlobalFilter={(value) => updateTableState({ globalFilter: value })}
         createPath={createPath}

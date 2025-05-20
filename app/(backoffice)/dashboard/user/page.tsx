@@ -3,6 +3,7 @@ import { DataTable } from "@/components/dataTable/DataTable";
 import { API_BASE_URL } from "@/lib/config/constant";
 import { columns } from "./columns";
 import { Metadata } from "next";
+import { userFilterConfig } from "@/lib/filterConfigFactory";
 
 export const metadata: Metadata = {
   title: "จัดการผู้ใช้งาน",
@@ -19,6 +20,7 @@ export default async function page() {
           columns={columns}
           apiUrl={`${API_BASE_URL}/admin/users`}
           filterableColumns={["roles", "isActive", "createdAt"]}
+          filterConfig={userFilterConfig}
           createPath={"/dashboard/user/create"}
           tableKey="users"
           titleText="ผู้ใช้งาน"

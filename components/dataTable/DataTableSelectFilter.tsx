@@ -21,7 +21,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ListFilterPlus } from "lucide-react";
 
-interface DataTableFacetedFilterProps<TData, TValue> {
+interface DataTableSelectFilterProps<TData, TValue> {
   column: Column<TData, TValue>;
   title: string;
   options?: {
@@ -32,11 +32,11 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   optionIsActive?: (option: string) => boolean;
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function DataTableSelectFilter<TData, TValue>({
   column,
   title,
   options = [],
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: DataTableSelectFilterProps<TData, TValue>) {
   const facets = column.getFacetedUniqueValues();
   const selectedValues = new Set(column.getFilterValue() as string[]);
 

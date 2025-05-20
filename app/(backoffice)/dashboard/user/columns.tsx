@@ -98,7 +98,10 @@ export const columns: ColumnDef<UserProps, any>[] = [
     header: "วันที่สร้าง",
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
-      return date.toLocaleDateString("th-TH");
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // เดือนนับจาก 0
+      const year = date.getFullYear(); // ได้ปี ค.ศ.
+      return `${day}/${month}/${year}`; // รูปแบบ 01-01-2025
     },
   },
   // {
