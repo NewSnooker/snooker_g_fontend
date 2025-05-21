@@ -94,7 +94,7 @@ function CustomCaption({ displayMonth, onMonthChange }: CustomCaptionProps) {
     <div className="rdp-caption">
       <div className="flex items-center justify-between w-full px-1">
         <select
-          className="rdp-caption_select mr-1 bg-transparent border border-zinc-300 dark:border-zinc-700 rounded p-1 text-sm"
+          className="rdp-caption_select mr-1 bg-background border rounded p-1 text-sm"
           value={selectedMonth}
           onChange={handleMonthChange}
         >
@@ -105,7 +105,7 @@ function CustomCaption({ displayMonth, onMonthChange }: CustomCaptionProps) {
           ))}
         </select>
         <select
-          className="rdp-caption_select bg-transparent border border-zinc-300 dark:border-zinc-700 rounded p-1 text-sm"
+          className="rdp-caption_select bg-background mr-1 border rounded p-1 text-sm"
           value={selectedYear}
           onChange={handleYearChange}
         >
@@ -127,6 +127,7 @@ export function DataTableDateRangeFilter<TData, TValue>({
   dateFormat = "dd/MM/yyyy",
 }: DataTableDateRangeFilterProps<TData, TValue>) {
   const selected = column.getFilterValue() as string[] | undefined;
+  const isMobile = useIsMobile();
   const [customStart, setCustomStart] = useState<string>("");
   const [customEnd, setCustomEnd] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -140,7 +141,7 @@ export function DataTableDateRangeFilter<TData, TValue>({
     undefined
   );
   const [open, setOpen] = useState(false);
-  const isMobile = useIsMobile();
+
   // ฟังก์ชันแปลงและประมวลผลวันที่
   const formatThaiDate = (date: Date): string => {
     return format(date, dateFormat); // ใช้รูปแบบสากลโดยไม่ระบุ locale
@@ -279,7 +280,7 @@ export function DataTableDateRangeFilter<TData, TValue>({
           {title}
           {selected?.length ? (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <span className="mx-2 h-full w-px bg-border inline-block" />
               <Badge
                 variant="secondary"
                 className="rounded-sm px-1 font-normal"
