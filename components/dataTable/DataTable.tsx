@@ -122,7 +122,19 @@ export function DataTable<TData extends { id: string }, TValue>({
     tableState.columnFilters.forEach(({ id, value }: any) => {
       const cfg = filterConfig[id];
       if (cfg) {
-        params.append(cfg.param, cfg.pick(value));
+        const picked = cfg.pick(value);
+        if (typeof picked === "object" && picked !== null) {
+          Object.entries(picked).forEach(([key, val]) => {
+            params.append(
+              `${cfg.param}${key.charAt(0).toUpperCase() + key.slice(1)}`,
+              val as string
+            );
+          });
+        } else if (Array.isArray(picked)) {
+          picked.forEach((item: string) => params.append(cfg.param, item));
+        } else {
+          params.append(cfg.param, picked as string);
+        }
       } else {
         const val = Array.isArray(value) ? value[0] : value;
         params.append(id, String(val));
@@ -130,9 +142,9 @@ export function DataTable<TData extends { id: string }, TValue>({
     });
 
     if (debouncedGlobalFilter) {
-      params.append("search", debouncedGlobalFilter);
+      const sanitizedSearch = debouncedGlobalFilter.replace(/[<>{}]/g, "");
+      params.append("search", sanitizedSearch);
     }
-
     return params.toString();
   };
 

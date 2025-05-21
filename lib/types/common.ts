@@ -37,13 +37,6 @@ export interface TableParams {
 export type DataFetcher<TData> = (
   params: TableParams
 ) => Promise<ApiTableResponse<TData>>;
-// options: [
-//   { label: "วันนี้", value: "today" },
-//   { label: "7 วันล่าสุด", value: "last7days" },
-//   { label: "30 วันล่าสุด", value: "last30days" },
-//   { label: "เดือนนี้", value: "thismonth" },
-//   { label: "ปีนี้", value: "thisyear" },
-// ],
 
 export enum DateRange {
   today = "today",

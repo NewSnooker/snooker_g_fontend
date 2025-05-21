@@ -8,12 +8,14 @@ export interface FilterOption {
 }
 
 export interface FilterConfigItem {
-  param: string; // ชื่อพารามิเตอร์ที่ส่งไป API
-  type: FilterType; // ประเภทของตัวกรอง
-  title: string; // ชื่อที่แสดงใน UI
-  options?: FilterOption[]; // ตัวเลือกสำหรับ select หรือ boolean
-  pick: (value: string | string[]) => string; // ฟังก์ชันแปลงค่าให้เป็น query string
-  dateFormat?: string; // รูปแบบวันที่ (สำหรับ dateRange)
+  param: string;
+  type: FilterType;
+  title: string;
+  options?: FilterOption[];
+  pick: (
+    value: string | string[]
+  ) => string | { [key: string]: string } | string[];
+  dateFormat?: string;
 }
 
 export type FilterConfig = Record<string, FilterConfigItem>;

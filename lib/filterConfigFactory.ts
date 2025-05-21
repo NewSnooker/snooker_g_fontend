@@ -18,7 +18,8 @@ export const userFilterConfig: FilterConfig = createFilterConfig({
       { label: Role.ADMIN, value: Role.ADMIN },
       { label: Role.SUPER_ADMIN, value: Role.SUPER_ADMIN },
     ],
-    pick: (value) => (Array.isArray(value) ? value.join(",") : value),
+    pick: (value) =>
+      Array.isArray(value) ? value.join(",") : (value as string),
   },
   isActive: {
     param: "isActive",
@@ -39,16 +40,18 @@ export const userFilterConfig: FilterConfig = createFilterConfig({
       { label: "วันนี้", value: DateRange.today },
       { label: "7 วันล่าสุด", value: DateRange.last7days },
       { label: "30 วันล่าสุด", value: DateRange.last30days },
-      { label: "เดือนนี้", value: DateRange.thismonth },
-      { label: "ปีนี้", value: DateRange.thisyear },
     ],
-    pick: (value) =>
-      Array.isArray(value) && value.length === 2
-        ? `${format(
-            parse(value[0], "dd/MM/yyyy", new Date()),
-            "yyyy-MM-dd"
-          )}|${format(parse(value[1], "dd/MM/yyyy", new Date()), "yyyy-MM-dd")}`
-        : (value as string),
+    pick: (value) => {
+      if (Array.isArray(value) && value.length === 2) {
+        const start = parse(value[0], "dd/MM/yyyy", new Date());
+        const end = parse(value[1], "dd/MM/yyyy", new Date());
+        return {
+          start: format(start, "yyyy-MM-dd"),
+          end: format(end, "yyyy-MM-dd"),
+        };
+      }
+      return value as string;
+    },
   },
 });
 

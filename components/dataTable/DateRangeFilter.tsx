@@ -26,7 +26,6 @@ import {
 import { CheckIcon, ListFilterPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { DateRange } from "@/lib/types/common";
 import { DayPicker, CaptionProps } from "react-day-picker";
@@ -176,14 +175,6 @@ export function DataTableDateRangeFilter<TData, TValue>({
         newStartDate = new Date(today);
         newStartDate.setDate(today.getDate() - 29);
         newEndDate = today;
-        break;
-      case DateRange.thismonth:
-        newStartDate = startOfMonth(today);
-        newEndDate = endOfMonth(today);
-        break;
-      case DateRange.thisyear:
-        newStartDate = startOfYear(today);
-        newEndDate = endOfYear(today);
         break;
       default:
         clearFilter();
