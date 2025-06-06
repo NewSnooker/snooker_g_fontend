@@ -24,15 +24,15 @@ import React, { useEffect, useState } from "react";
 import { accountFormSchema } from "@/lib/config/schemas";
 import { ShineBorder } from "../magicui/shine-border";
 import { Loader2 } from "lucide-react";
-import AvatarUpload from "./uploads/AvatarUpload";
-import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
-import { useUsernameMutation } from "@/hooks/react-query/mutation/useUsernameMutation";
+import MyAvatarUpload from "./uploads/MyAvatarUpload";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
+import { useUpdateUsernameMutation } from "@/hooks/react-query/mutation/user/useUpdateUsernameMutation";
 
 export default function AccountForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { data: response, isSuccess } = useMeQuery();
   const data = response?.data;
-  const usernameMutation = useUsernameMutation();
+  const usernameMutation = useUpdateUsernameMutation();
 
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
@@ -72,8 +72,6 @@ export default function AccountForm() {
       <CardHeader>
         <div className="flex justify-center sm:justify-start">
           <CardTitle className="text-2xl font-bold ">บัญชีของคุณ</CardTitle>
-
-          {/* <LogoTextGradient className="text-base" /> */}
         </div>
         <CardDescription className="text-center sm:text-left">
           กรอกข้อมูลเพื่อแก้ไขบัญชีของคุณ
@@ -85,7 +83,7 @@ export default function AccountForm() {
             <div className="grid gap-4">
               {/* image */}
               <div className="grid auto-rows-max items-start gap-4 ">
-                <AvatarUpload
+                <MyAvatarUpload
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                 />

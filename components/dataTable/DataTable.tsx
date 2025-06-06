@@ -43,7 +43,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 // ฟังก์ชันช่วยสำหรับจัดการ localStorage
-const getStoredTableState = (tableKey: string) => {
+export const getStoredTableState = (tableKey: string) => {
   if (typeof window === "undefined") {
     return {
       columnFilters: [],
@@ -185,20 +185,6 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   const data = response?.data || [];
   const pageCount = response?.pageCount || 0;
-  // ฟังก์ชันสำหรับดาวน์โหลดข้อมูลที่เลือก
-  const handleDownloadSelected = (selectedRows: TData[]) => {
-    console.log("Downloading selected rows:", selectedRows);
-    // ตัวอย่าง: สร้างไฟล์ CSV หรือส่งข้อมูลไป API
-    // คุณสามารถปรับแต่งตามต้องการ เช่น เรียก API ดาวน์โหลด หรือสร้างไฟล์
-  };
-
-  // ฟังก์ชันสำหรับลบข้อมูลที่เลือก
-  const handleDeleteSelected = async (selectedRows: TData[]) => {
-    if (confirm(`คุณต้องการลบ ${selectedRows.length} รายการหรือไม่?`)) {
-      const ids = selectedRows.map((row) => row.id);
-      console.log("Deleting selected rows with IDs:", ids);
-    }
-  };
   const table = useReactTable({
     data,
     columns,
@@ -274,8 +260,6 @@ export function DataTable<TData extends { id: string }, TValue>({
         setGlobalFilter={(value) => updateTableState({ globalFilter: value })}
         createPath={createPath}
         titleText={titleText}
-        onDownloadSelected={handleDownloadSelected}
-        onDeleteSelected={handleDeleteSelected}
       />
       <div className="relative w-full ">
         <div className="rounded-md border overflow-x-auto max-w-[calc(100vw-2rem)]">

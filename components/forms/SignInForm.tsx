@@ -26,7 +26,7 @@ import PasswordInput from "./PasswordInput";
 import React, { useState } from "react"; // เพิ่ม useState
 import { signinFormSchema } from "@/lib/config/schemas";
 import { ShineBorder } from "../magicui/shine-border";
-import { signIn } from "@/lib/api/authApi";
+import { signIn } from "@/lib/api/auth.api";
 import LogoTextGradient from "../frontend/LogoTextGradient";
 import { GoogleLoginButton } from "./GoogleLoginButton";
 import { Loader2 } from "lucide-react";
@@ -47,7 +47,10 @@ export default function SignInForm() {
   async function onSubmit(values: z.infer<typeof signinFormSchema>) {
     try {
       setIsLoading(true);
-      const response = await signIn(values.email, values.password);
+      const response = await signIn({
+        email: values.email,
+        password: values.password,
+      });
       if (response && response.status === 200) {
         toast.success(response.message + " ✅");
         console.log(response);

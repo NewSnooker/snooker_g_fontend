@@ -1,5 +1,5 @@
 "use client";
-import { signInWithGoogle } from "@/lib/api/authApi";
+import { signInWithGoogle } from "@/lib/api/auth.api";
 import { DEFAULT_ERROR_MESSAGE } from "@/lib/config/constant";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { useRouter } from "next/navigation";

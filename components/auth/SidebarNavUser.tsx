@@ -23,11 +23,11 @@ import {
 } from "lucide-react";
 import { WEBSITE_INITIALS } from "@/lib/config/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { signOut } from "@/lib/api/authApi";
+import { signOut } from "@/lib/api/auth.api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
 import { hasAdminRole } from "@/lib/utils/auth";
 
 export function SideBarNavUser() {

@@ -1,25 +1,26 @@
 "use client";
 import { UploadButton } from "@/lib/utils/uploadthing";
-import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
 import Image from "next/image";
 import { toast } from "sonner";
-import { useAvatarMutation } from "@/hooks/react-query/mutation/useAvatarMutation";
+import { useUpdateAvatarMutation } from "@/hooks/react-query/mutation/user/useUpdateAvatarMutation";
 import { imageBody } from "@/lib/types/common";
 import { deleteFileUploadthing } from "@/app/api/uploadthing/action";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useUpdateMyAvatarMutation } from "@/hooks/react-query/mutation/user/useUpdateMyAvatarMutation";
 
-type AvatarUploadProps = {
+type MyAvatarUploadProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AvatarUpload({
+export default function MyAvatarUpload({
   isLoading,
   setIsLoading,
-}: AvatarUploadProps) {
+}: MyAvatarUploadProps) {
   const { data: response } = useMeQuery();
   const userData = response?.data;
-  const avatarMutation = useAvatarMutation();
+  const myAvatarMutation = useUpdateMyAvatarMutation();
 
   const handleUploadComplete = async (files: imageBody[]) => {
     try {
@@ -32,13 +33,13 @@ export default function AvatarUpload({
         return;
       }
       const oldImageKey = userData?.image?.key;
-      await avatarMutation.mutateAsync({
+      await myAvatarMutation.mutateAsync({
         imageId: userData.image.id,
         imageData: file,
       });
       if (oldImageKey) {
         try {
-          await deleteFileUploadthing(oldImageKey);
+          await deleteFileUploadthing([oldImageKey]);
           console.log("Old image deleted successfully:", oldImageKey);
         } catch (deleteError) {
           console.error("Error deleting old image:", deleteError);
@@ -71,7 +72,7 @@ export default function AvatarUpload({
 
         <UploadButton
           endpoint="avatar"
-          disabled={isLoading || avatarMutation.isPending}
+          disabled={isLoading || myAvatarMutation.isPending}
           onClientUploadComplete={(files) => handleUploadComplete(files)}
           onUploadError={(error: Error) => {
             console.error("Upload error:", error);

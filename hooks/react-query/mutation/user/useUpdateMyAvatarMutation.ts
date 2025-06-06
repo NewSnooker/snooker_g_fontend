@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateAvatar } from "@/lib/api/userApi";
 import { imageBody } from "@/lib/types/common";
 import { getQueryClient } from "@/lib/utils";
 import { toast } from "sonner";
+import { updateAvatar } from "@/lib/api/user.api";
 
-export const useAvatarMutation = () => {
+export const useUpdateMyAvatarMutation = () => {
   const queryClient = getQueryClient();
+  const tableKey = "users";
 
   return useMutation({
     mutationFn: (body: { imageId: string; imageData: imageBody }) =>
@@ -13,7 +14,9 @@ export const useAvatarMutation = () => {
     onSuccess: (response) => {
       if (response.status === 200) {
         toast.success(response.message + " ✅" || "แก้ไขภาพโปรไฟล์สำเร็จ ✅");
-        queryClient.invalidateQueries({ queryKey: ["user-me"] });
+        queryClient.invalidateQueries({
+          queryKey: ["user-me"],
+        });
       } else {
         toast.error(
           response.message + " ❌" || "เกิดข้อผิดพลาดในการแก้ไขภาพโปรไฟล์ ❌"

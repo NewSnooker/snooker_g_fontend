@@ -26,7 +26,7 @@ import PasswordInput from "./PasswordInput";
 import React, { useState } from "react"; // เพิ่ม useState
 import { signupFormSchema } from "@/lib/config/schemas";
 import { ShineBorder } from "../magicui/shine-border";
-import { signUp } from "@/lib/api/authApi";
+import { signUp } from "@/lib/api/auth.api";
 import LogoTextGradient from "../frontend/LogoTextGradient";
 import { GoogleLoginButton } from "./GoogleLoginButton";
 import { Loader2 } from "lucide-react";
@@ -49,11 +49,11 @@ export default function SignUpForm() {
   async function onSubmit(values: z.infer<typeof signupFormSchema>) {
     try {
       setIsLoading(true);
-      const response = await signUp(
-        values.username,
-        values.email,
-        values.password
-      );
+      const response = await signUp({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
       if (response.status === 201) {
         toast.success(response.message + " ✅");
         router.push("/sign-in");

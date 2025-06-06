@@ -1,9 +1,13 @@
 "use client";
+import ActionColumn from "@/components/dataTable/column/ActionColumn";
+import ImageColumn from "@/components/dataTable/column/ImageColumn";
+import UsernameColumn from "@/components/dataTable/column/UsernameColumn";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DEFAULT_AVATAR_URL } from "@/lib/config/constant";
 import { Role, UserProps } from "@/lib/types/user";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 
 export const columns: ColumnDef<UserProps, any>[] = [
   {
@@ -29,8 +33,23 @@ export const columns: ColumnDef<UserProps, any>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "image",
+    header: "รูปภาพ",
+    cell: ({ row }) => {
+      const data = row.original;
+      return ImageColumn(data);
+    },
+    enableSorting: false, // ไม่ให้เรียงคอลัมน์ select
+    enableHiding: false,
+  },
+  {
     accessorKey: "username",
     header: "ชื่อ",
+    cell: ({ row }) => {
+      const data = row.original;
+      return <UsernameColumn data={data} />;
+    },
+    enableHiding: false,
   },
   {
     accessorKey: "email",
@@ -104,19 +123,19 @@ export const columns: ColumnDef<UserProps, any>[] = [
       return `${day}/${month}/${year}`; // รูปแบบ 01-01-2025
     },
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const data  = row.original;
-  //     return (
-  //       <ActionColumn
-  //         row={row}
-  //         model=""
-  //         title=""
-  //         editEndpoint={`/update/${.id}`}
-  //         id={data.id}
-  //       />
-  //     );
-  //   },
-  // },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <ActionColumn
+          row={row}
+          model="users" // ระบุ model เป็น string
+          title="ผู้ใช้งาน" // ระบุ title
+          editEndpoint={`/dashboard/user/update/${data.id}`}
+          id={data.id}
+        />
+      );
+    },
+  },
 ];

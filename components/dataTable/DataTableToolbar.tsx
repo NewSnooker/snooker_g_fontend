@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableSelectFilter } from "./DataTableSelectFilter";
 import { DataTableViewOptions } from "./DataTableViewOptions";
-import Link from "next/link";
-import { Download, FunnelX, Trash, X } from "lucide-react";
-import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
+import { FunnelX, X } from "lucide-react";
 import { DataTableDateRangeFilter } from "./DateRangeFilter";
 import { FilterConfig } from "@/lib/types/filterConfig";
 import { DataTableBooleanFilter } from "./DataTableBooleanFilter";
+import Link from "next/link";
+import AdminDeleteUsersDialog from "./AdminDeleteUsersDialog";
+import AdminForceLogoutUsersDialog from "./AdminForceLogoutUsersDialog";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -22,11 +22,9 @@ interface DataTableToolbarProps<TData> {
   createPath?: string;
   titleText?: string;
   setGlobalFilter: (value: string) => void;
-  onDownloadSelected?: (selectedRows: TData[]) => void;
-  onDeleteSelected?: (selectedRows: TData[]) => void;
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData extends { id: string }>({
   table,
   filterableColumns = [],
   filterConfig,
@@ -34,8 +32,6 @@ export function DataTableToolbar<TData>({
   createPath,
   titleText,
   setGlobalFilter,
-  onDownloadSelected,
-  onDeleteSelected,
 }: DataTableToolbarProps<TData>) {
   const isFiltered =
     table.getState().columnFilters.length > 0 || globalFilter !== "";
@@ -122,45 +118,15 @@ export function DataTableToolbar<TData>({
         <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0 sm:ml-auto">
           {selectedRows.length > 0 && (
             <div className="flex flex-wrap items-center gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  onDownloadSelected?.(selectedRows.map((row) => row.original))
-                }
-                className="h-8 border-dashed text-xs px-2 lg:px-3"
-              >
-                <Download className="h-4 w-4 mr-0.5" />
-                <div className="hidden sm:block">ดาวน์โหลด</div>
-                <Separator orientation="vertical" className="mx-2 h-4" />
-                <Badge
-                  variant="secondary"
-                  className="rounded-sm px-1 font-normal"
-                >
-                  {selectedRows.length}
-                </Badge>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  onDeleteSelected?.(selectedRows.map((row) => row.original))
-                }
-                className={`${destructiveActionClass} text-xs px-2 lg:px-3`}
-              >
-                <Trash className="h-4 w-4 mr-0.5" />
-                <div className="hidden sm:block">ลบ</div>
-                <Separator
-                  orientation="vertical"
-                  className="mx-2 h-4 bg-red-500 dark:bg-red-400"
-                />
-                <Badge
-                  variant="secondary"
-                  className="rounded-sm px-1 font-normal bg-red-400 dark:bg-red-400 text-white"
-                >
-                  {selectedRows.length}
-                </Badge>
-              </Button>
+              <AdminForceLogoutUsersDialog
+                ids={selectedRows.map((r) => r.id)}
+                titleText={titleText}
+                table={table}
+              />
+              <AdminDeleteUsersDialog
+                ids={selectedRows.map((r) => r.id)}
+                titleText={titleText}
+              />
               <Button
                 variant="ghost"
                 onClick={() => {

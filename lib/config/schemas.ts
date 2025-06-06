@@ -38,6 +38,18 @@ export const signinFormSchema = z.object({
     .regex(/[a-zA-Z0-9]/, { message: "ต้องมีตัวอักษรและเลขอย่างน้อย 1 ตัว" }),
 });
 
+export const updateUserFormSchema = z.object({
+  username: z
+    .string()
+    .max(20, { message: "ชื่อต้องไม่เกิน 20 ตัวอักษร" })
+    .min(5, { message: "ชื่อต้องมีอย่างน้อย 5 ตัวอักษร" }),
+  email: z
+    .string()
+    .max(30, { message: "อีเมลต้องไม่เกิน 30 ตัวอักษร" })
+    .min(5, { message: "อีเมลต้องมีอย่างน้อย 5 ตัวอักษร" })
+    .email({ message: "รูปแบบอีเมลไม่ถูกต้อง" }),
+});
+
 export const imageFormSchema = z.object({
   name: z.string(),
   key: z.string(),

@@ -11,12 +11,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOutIcon, Shield, UserCircleIcon } from "lucide-react";
 import { DEFAULT_ERROR_MESSAGE, WEBSITE_INITIALS } from "@/lib/config/constant";
-import { signOut } from "@/lib/api/authApi";
+import { signOut } from "@/lib/api/auth.api";
 import { toast } from "sonner";
 import { getQueryClient } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { useMeQuery } from "@/hooks/react-query/queries/useMeQuery";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
 import Link from "next/link";
 import { hasAdminRole } from "@/lib/utils/auth";
 

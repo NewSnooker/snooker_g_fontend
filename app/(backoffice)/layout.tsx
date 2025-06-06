@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Content หลัก */}
-          <main className="flex-1 p-4">{children}</main>
+          <main className="flex-1">{children}</main>
         </div>
       </div>
     </SidebarProvider>

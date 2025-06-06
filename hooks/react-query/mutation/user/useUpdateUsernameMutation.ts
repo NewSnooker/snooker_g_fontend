@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateUsername } from "@/lib/api/userApi";
+import { updateUsername } from "@/lib/api/user.api";
 import { getQueryClient } from "@/lib/utils";
 import { toast } from "sonner";
 
-export const useUsernameMutation = () => {
+export const useUpdateUsernameMutation = () => {
   const queryClient = getQueryClient();
 
   return useMutation({
