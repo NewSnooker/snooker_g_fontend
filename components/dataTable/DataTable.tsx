@@ -25,6 +25,7 @@ import {
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableToolbar } from "./DataTableToolbar";
 import { FilterConfig } from "@/lib/types/filterConfig";
+import { useTableState } from "@/hooks/dataTable/useTableState";
 
 interface ApiResponse<TData> {
   data: TData[];
@@ -42,37 +43,6 @@ interface DataTableProps<TData, TValue> {
   titleText?: string;
 }
 
-// ฟังก์ชันช่วยสำหรับจัดการ localStorage
-export const getStoredTableState = (tableKey: string) => {
-  if (typeof window === "undefined") {
-    return {
-      columnFilters: [],
-      globalFilter: "",
-      sorting: [],
-      columnVisibility: {},
-      pagination: { pageIndex: 0, pageSize: 10 },
-      rowSelection: {},
-    };
-  }
-  const saved = localStorage.getItem(`${tableKey}_tableState`);
-  return saved
-    ? JSON.parse(saved)
-    : {
-        columnFilters: [],
-        globalFilter: "",
-        sorting: [],
-        columnVisibility: {},
-        pagination: { pageIndex: 0, pageSize: 10 },
-        rowSelection: {},
-      };
-};
-
-const saveTableState = (tableKey: string, state: any) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(`${tableKey}_tableState`, JSON.stringify(state));
-  }
-};
-
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   apiUrl,
@@ -82,9 +52,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   titleText,
   tableKey,
 }: DataTableProps<TData, TValue>) {
-  const [tableState, setTableState] = useState(() =>
-    getStoredTableState(tableKey)
-  );
+  const { tableState, setTableState } = useTableState(tableKey);
   const [debouncedGlobalFilter, setDebouncedGlobalFilter] = useState(
     tableState.globalFilter
   );
@@ -101,11 +69,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   }, [tableState.globalFilter]);
 
   const updateTableState = (newState: Partial<typeof tableState>) => {
-    setTableState((prev: any) => {
-      const updatedState = { ...prev, ...newState };
-      saveTableState(tableKey, updatedState);
-      return updatedState;
-    });
+    setTableState((prev) => ({ ...prev, ...newState }));
   };
 
   const createQueryParams = () => {

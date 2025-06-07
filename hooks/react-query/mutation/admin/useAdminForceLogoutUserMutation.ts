@@ -2,8 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/utils";
 import { toast } from "sonner";
 import { adminForceLogoutUser } from "@/lib/api/admin.api";
-import { useTableState } from "@/hooks/table/useTableState";
-import { useTableQueryKey } from "@/hooks/table/useTableQueryKey";
+import { useTableState } from "@/hooks/dataTable/useTableState";
+import { useTableQueryKey } from "@/hooks/dataTable/useTableQueryKey";
 
 export const useAdminForceLogoutUserMutation = () => {
   const queryClient = getQueryClient();
