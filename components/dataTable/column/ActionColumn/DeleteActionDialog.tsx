@@ -12,36 +12,45 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { LogOut } from "lucide-react";
-import { useAdminForceLogoutUserMutation } from "@/hooks/react-query/mutation/admin/useAdminForceLogoutUserMutation";
-import { ModelType } from "@/lib/types/common";
+import { Trash } from "lucide-react";
+import { useAdminSoftDeleteUserMutation } from "@/hooks/react-query/mutation/admin/useAdminSoftDeleteUserMutation";
 import { toast } from "sonner";
+import { ModelType } from "@/lib/types/common";
+import { Role } from "@/lib/types/user";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
+import { canManageUser } from "@/lib/utils/permission";
 
-export function ForceLogoutActionDialog({
+export function DeleteActionDialog({
   title,
   model,
   id,
+  roles,
 }: {
   title: string;
   model: ModelType;
   id: string;
+  roles: Role[];
 }) {
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const { data: response } = useMeQuery();
+  const dataMe = response?.data;
+  const isUserModel = model === "users";
 
-  const adminForceLogoutUserMutation = useAdminForceLogoutUserMutation();
+  const adminSoftDeleteUserMutation = useAdminSoftDeleteUserMutation();
 
-  const handleLogoutAction = async () => {
+  const handleDeleteAction = async () => {
     if (!id) {
-      toast.error("ไม่พบ ID สำหรับการออกจากระบบ");
+      toast.error("ไม่พบ ID สำหรับการลบ");
       setOpen(false);
       return;
     }
 
     try {
       setIsLoading(true);
-      if (model === "users") {
-        await adminForceLogoutUserMutation.mutateAsync({ ids: [id] });
+      if (isUserModel) {
+        if (!canManageUser(dataMe?.roles, roles)) return null;
+        await adminSoftDeleteUserMutation.mutateAsync({ ids: [id] });
       } else {
         throw new Error(`Unsupported model: ${model}`);
       }
@@ -59,18 +68,18 @@ export function ForceLogoutActionDialog({
         <Button
           variant="ghost"
           size="sm"
-          className="cursor-pointer rounded-sm w-full flex items-center justify-start"
+          className="text-red-600 hover:text-red-700 cursor-pointer rounded-sm w-full flex items-center justify-start"
           disabled={!title}
         >
-          <LogOut className="w-4 h-4 mr-0.5 flex-shrink-0" />
-          <span>ออกจากระบบ</span>
+          <Trash className="w-4 h-4 mr-0.5 flex-shrink-0" />
+          <span>ลบ</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>คุณแน่ใจแล้วหรือไม่?</AlertDialogTitle>
           <AlertDialogDescription>
-            การดำเนินการนี้จะออกจากระบบ{" "}
+            การดำเนินการนี้จะออกจากระบบและลบ{" "}
             <span className="text-red-600 dark:text-red-400">{title}นี้</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -78,10 +87,10 @@ export function ForceLogoutActionDialog({
           <AlertDialogCancel disabled={isLoading}>ยกเลิก</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white"
-            onClick={handleLogoutAction}
+            onClick={handleDeleteAction}
             disabled={isLoading}
           >
-            ยืนยันการออกจากระบบ
+            ยืนยันการลบ
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

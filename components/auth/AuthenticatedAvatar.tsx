@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
 import Link from "next/link";
-import { hasAdminRole } from "@/lib/utils/auth";
+import { hasAdminRole } from "@/lib/utils/permission";
 
 export default function AuthenticatedAvatar({}) {
   const queryClient = getQueryClient();

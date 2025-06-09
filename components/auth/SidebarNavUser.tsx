@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
-import { hasAdminRole } from "@/lib/utils/auth";
+import { hasAdminRole } from "@/lib/utils/permission";
 
 export function SideBarNavUser() {
   const router = useRouter();

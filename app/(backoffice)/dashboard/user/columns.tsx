@@ -1,13 +1,11 @@
 "use client";
-import ActionColumn from "@/components/dataTable/column/ActionColumn";
+import ActionColumn from "@/components/dataTable/column/ActionColumn/ActionColumn";
 import ImageColumn from "@/components/dataTable/column/ImageColumn";
 import UsernameColumn from "@/components/dataTable/column/UsernameColumn";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DEFAULT_AVATAR_URL } from "@/lib/config/constant";
 import { Role, UserProps } from "@/lib/types/user";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 
 export const columns: ColumnDef<UserProps, any>[] = [
   {
@@ -133,7 +131,7 @@ export const columns: ColumnDef<UserProps, any>[] = [
           model="users" // ระบุ model เป็น string
           title="ผู้ใช้งาน" // ระบุ title
           editEndpoint={`/dashboard/user/update/${data.id}`}
-          id={data.id}
+          data={data}
         />
       );
     },

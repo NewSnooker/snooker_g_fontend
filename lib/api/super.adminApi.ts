@@ -73,3 +73,18 @@ export const adminRestoreUser = async (ids: string[]) => {
   const data = await response.json();
   return data;
 };
+export const ImpersonationUser = async (id: string) => {
+  const response = await fetch(`${API_BASE_URL}/super-admin/impersonate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userIdToImpersonate: id,
+    }),
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
+};
