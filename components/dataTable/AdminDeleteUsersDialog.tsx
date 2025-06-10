@@ -14,13 +14,16 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Trash } from "lucide-react";
 import { useAdminSoftDeleteUserMutation } from "@/hooks/react-query/mutation/admin/useAdminSoftDeleteUserMutation";
+import { Role } from "@/lib/types/user";
 
 export default function AdminDeleteUsersDialog({
   ids,
   titleText,
+  rolesMe,
 }: {
   ids: string[];
   titleText?: string;
+  rolesMe: Role[];
 }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -33,6 +36,7 @@ export default function AdminDeleteUsersDialog({
       setIsLoading(true);
       await AdminSoftDeleteUserMutation.mutateAsync({
         ids,
+        roles: rolesMe,
       });
     } catch (error) {
       console.error("Error deleting selected items:", error);

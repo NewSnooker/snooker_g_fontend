@@ -15,15 +15,18 @@ import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
 import { useAdminForceLogoutUserMutation } from "@/hooks/react-query/mutation/admin/useAdminForceLogoutUserMutation";
 import { Table } from "@tanstack/react-table";
+import { Role } from "@/lib/types/user";
 
 export default function AdminForceLogoutUsersDialog({
   ids,
   titleText,
   table,
+  rolesMe,
 }: {
   ids: string[];
   titleText?: string;
   table: Table<any>;
+  rolesMe: Role[];
 }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -34,6 +37,7 @@ export default function AdminForceLogoutUsersDialog({
       setIsLoading(true);
       const response = await AdminForceLogoutUserMutation.mutateAsync({
         ids,
+        roles: rolesMe,
       });
       if (response.status === 200) {
         table.resetRowSelection();

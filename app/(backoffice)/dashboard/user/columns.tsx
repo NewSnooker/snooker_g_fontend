@@ -5,6 +5,7 @@ import UsernameColumn from "@/components/dataTable/column/UsernameColumn";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Role, UserProps } from "@/lib/types/user";
+import { hasSuperAdminRole } from "@/lib/utils/permission";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<UserProps, any>[] = [
@@ -27,7 +28,7 @@ export const columns: ColumnDef<UserProps, any>[] = [
         aria-label="เลือกแถว"
       />
     ),
-    enableSorting: false, // ไม่ให้เรียงคอลัมน์ select
+    enableSorting: false,
     enableHiding: false,
   },
   {

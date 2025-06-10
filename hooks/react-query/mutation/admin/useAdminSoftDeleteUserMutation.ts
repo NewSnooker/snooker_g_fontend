@@ -4,6 +4,9 @@ import { toast } from "sonner";
 import { adminSoftDeleteUser } from "@/lib/api/admin.api";
 import { useTableState } from "@/hooks/dataTable/useTableState";
 import { useTableQueryKey } from "@/hooks/dataTable/useTableQueryKey";
+import { Role } from "@/lib/types/user";
+import { hasSuperAdminRole } from "@/lib/utils/permission";
+import { superAdminSoftDeleteUser } from "@/lib/api/super.adminApi";
 
 export const useAdminSoftDeleteUserMutation = () => {
   const queryClient = getQueryClient();
@@ -11,7 +14,13 @@ export const useAdminSoftDeleteUserMutation = () => {
   const { tableState } = useTableState(tableKey);
   const queryKey = useTableQueryKey("/admin/users", tableState);
   return useMutation({
-    mutationFn: (body: { ids: string[] }) => adminSoftDeleteUser(body.ids),
+    mutationFn: (body: { ids: string[]; roles: Role[] }) => {
+      const isSuperAdmin = hasSuperAdminRole(body.roles);
+      if (isSuperAdmin) {
+        return superAdminSoftDeleteUser(body.ids);
+      }
+      return adminSoftDeleteUser(body.ids);
+    },
     onSuccess: (response) => {
       if (response && response.status === 200) {
         toast.success(response.message + " ✅");

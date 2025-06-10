@@ -4,6 +4,9 @@ import { toast } from "sonner";
 import { adminForceLogoutUser } from "@/lib/api/admin.api";
 import { useTableState } from "@/hooks/dataTable/useTableState";
 import { useTableQueryKey } from "@/hooks/dataTable/useTableQueryKey";
+import { Role } from "@/lib/types/user";
+import { hasSuperAdminRole } from "@/lib/utils/permission";
+import { superAdminForceLogoutUser } from "@/lib/api/super.adminApi";
 
 export const useAdminForceLogoutUserMutation = () => {
   const queryClient = getQueryClient();
@@ -12,7 +15,14 @@ export const useAdminForceLogoutUserMutation = () => {
   const queryKey = useTableQueryKey("/admin/users", tableState);
 
   return useMutation({
-    mutationFn: (body: { ids: string[] }) => adminForceLogoutUser(body.ids),
+    mutationFn: (body: { ids: string[]; roles: Role[] }) => {
+      const isSuperAdmin = hasSuperAdminRole(body.roles);
+
+      if (isSuperAdmin) {
+        return superAdminForceLogoutUser(body.ids);
+      }
+      return adminForceLogoutUser(body.ids);
+    },
     onSuccess: (response) => {
       if (response && response.status === 200) {
         toast.success(response.message + " ✅");

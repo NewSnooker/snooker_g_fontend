@@ -64,7 +64,10 @@ export const adminUpdateUser = async (user: UpdateUserBody) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ user }),
+    body: JSON.stringify({
+      username: user.username,
+      email: user.email,
+    }),
     credentials: "include",
   });
 

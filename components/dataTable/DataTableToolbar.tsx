@@ -13,6 +13,7 @@ import { DataTableBooleanFilter } from "./DataTableBooleanFilter";
 import Link from "next/link";
 import AdminDeleteUsersDialog from "./AdminDeleteUsersDialog";
 import AdminForceLogoutUsersDialog from "./AdminForceLogoutUsersDialog";
+import { useMeQuery } from "@/hooks/react-query/queries/user/useMeQuery";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -39,6 +40,8 @@ export function DataTableToolbar<TData extends { id: string }>({
 
   const destructiveActionClass =
     "h-8 text-red-500 dark:text-white hover:text-red-600 bg-red-50 dark:bg-red-900 hover:bg-red-100 dark:hover:bg-red-800 border-dashed border-red-500 dark:border-red-400";
+  const { data: response } = useMeQuery();
+  const dataMe = response?.data;
 
   return (
     <div className="flex flex-col gap-y-4 w-full">
@@ -122,10 +125,12 @@ export function DataTableToolbar<TData extends { id: string }>({
                 ids={selectedRows.map((r) => r.id)}
                 titleText={titleText}
                 table={table}
+                rolesMe={dataMe?.roles}
               />
               <AdminDeleteUsersDialog
                 ids={selectedRows.map((r) => r.id)}
                 titleText={titleText}
+                rolesMe={dataMe?.roles}
               />
               <Button
                 variant="ghost"
